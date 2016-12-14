@@ -16,7 +16,6 @@ public class CompassFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        Log.d(CompassFragment.class.getSimpleName(), "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_compass, container, false);
 
         return rootView;
