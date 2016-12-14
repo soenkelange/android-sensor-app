@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity
     private void setupViewPager(ViewPager viewPager)
     {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CompassFragment(), "Compass");
-        adapter.addFragment(new SpiritLevelFragment(), "Spirit Level");
-        adapter.addFragment(new ExporterFragment(), "Exporter");
+        adapter.addFragment(new CompassFragment(), getString(R.string.main_tab_compass));
+        adapter.addFragment(new SpiritLevelFragment(), getString(R.string.main_tab_spiritLevel));
+        adapter.addFragment(new ExporterFragment(), getString(R.string.main_tab_exporter));
         viewPager.setAdapter(adapter);
     }
 
