@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
             tabLayout = (TabLayout)findViewById(R.id.tablayout);
             setupViewPager(viewPager);
             tabLayout.setupWithViewPager(viewPager);
+            getSupportActionBar().setElevation(0);
         }
     }
 

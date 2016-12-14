@@ -16,7 +16,6 @@ public class SpiritLevelFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        Log.d(SpiritLevelFragment.class.getSimpleName(), "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_spirit_level, container, false);
 
         return rootView;

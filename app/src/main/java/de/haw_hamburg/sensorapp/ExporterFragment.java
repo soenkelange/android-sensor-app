@@ -16,7 +16,6 @@ public class ExporterFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        Log.d(ExporterFragment.class.getSimpleName(), "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_exporter, container, false);
 
         return rootView;
