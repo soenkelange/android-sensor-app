@@ -11,6 +11,8 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.haw_hamburg.sensorapp.recorder.RecorderFragment;
+
 public class MainActivity extends AppCompatActivity
 {
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         adapter.addFragment(new CompassFragment(), getString(R.string.main_tab_compass));
         adapter.addFragment(new SpiritLevelFragment(), getString(R.string.main_tab_spiritLevel));
         adapter.addFragment(new ExporterFragment(), getString(R.string.main_tab_exporter));
+        adapter.addFragment(RecorderFragment.newInstance(), getString(R.string.main_tab_recorder));
         viewPager.setAdapter(adapter);
     }
 

@@ -3,4 +3,7 @@
     <string name="main.tab.compass">Compass</string>
     <string name="main.tab.spiritLevel">Spirit Level</string>
     <string name="main.tab.exporter">Exporter</string>
+    <string name="main.tab.recorder">Recorder</string>
+
+    <string name="recorder.helloWorld">Hello World!</string>
 </resources>
