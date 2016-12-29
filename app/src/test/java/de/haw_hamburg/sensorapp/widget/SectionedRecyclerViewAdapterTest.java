@@ -1,9 +1,11 @@
-package de.haw_hamburg.sensorapp.recorder;
+package de.haw_hamburg.sensorapp.widget;
 
 import android.view.ViewGroup;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import de.haw_hamburg.sensorapp.widget.SectionedRecyclerViewAdapter;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
