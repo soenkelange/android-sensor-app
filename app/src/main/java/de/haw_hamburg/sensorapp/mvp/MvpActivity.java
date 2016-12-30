@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public abstract class MvpActivity<P extends Presenter<V>, V extends de.haw_hamburg.sensorapp.mvp.View> extends AppCompatActivity implements PresenterProvider<P>, ViewProvider<V> {
 
-    private ActivityLifecycleDelegate lifecycleDelegate;
+    private ActivityLifecycleDelegate<P, V> lifecycleDelegate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,8 @@ public abstract class MvpActivity<P extends Presenter<V>, V extends de.haw_hambu
 
     public ActivityLifecycleDelegate<P, V> getLifecycleDelegate() {
         if (lifecycleDelegate == null) {
-            PresenterViewBinder presenterViewBinder = new PresenterViewBinder(this, this);
-            lifecycleDelegate = new ActivityLifecycleDelegate(presenterViewBinder);
+            PresenterViewBinder<P, V>  presenterViewBinder = new PresenterViewBinder<>(this, this);
+            lifecycleDelegate = new ActivityLifecycleDelegate<>(presenterViewBinder);
         }
         return lifecycleDelegate;
     }

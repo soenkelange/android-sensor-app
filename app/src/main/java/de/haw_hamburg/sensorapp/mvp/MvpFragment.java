@@ -7,7 +7,7 @@ import android.view.View;
 
 public abstract class MvpFragment<P extends Presenter<V>, V extends de.haw_hamburg.sensorapp.mvp.View> extends Fragment implements PresenterProvider<P>, ViewProvider<V> {
 
-    private FragmentLifecycleDelegate lifecycleDelegate;
+    private FragmentLifecycleDelegate<P, V>  lifecycleDelegate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,8 +77,8 @@ public abstract class MvpFragment<P extends Presenter<V>, V extends de.haw_hambu
 
     private FragmentLifecycleDelegate<P, V> getLifecycleDelegate() {
         if (lifecycleDelegate == null) {
-            PresenterViewBinder viewBinder = new PresenterViewBinder(this, this);
-            lifecycleDelegate = new FragmentLifecycleDelegate(viewBinder);
+            PresenterViewBinder<P, V>  viewBinder = new PresenterViewBinder<>(this, this);
+            lifecycleDelegate = new FragmentLifecycleDelegate<>(viewBinder);
         }
         return lifecycleDelegate;
     }
