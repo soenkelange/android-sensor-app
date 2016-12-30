@@ -26,6 +26,7 @@ public class SectionedRecyclerViewAdapterTest {
         when(sectionedRecyclerViewAdapter.getSectionCount()).thenReturn(2);
         when(sectionedRecyclerViewAdapter.getItemCountForSection(0)).thenReturn(3);
         when(sectionedRecyclerViewAdapter.getItemCountForSection(1)).thenReturn(2);
+        when(sectionedRecyclerViewAdapter.getItemCountForSection(2)).thenThrow(IndexOutOfBoundsException.class);
     }
 
     @Test

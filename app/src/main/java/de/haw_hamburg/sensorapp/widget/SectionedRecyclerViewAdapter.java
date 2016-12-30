@@ -51,7 +51,7 @@ public abstract class SectionedRecyclerViewAdapter<HVH extends RecyclerView.View
     public int getItemCount() {
         int headerCount = getSectionCount();
         int count = headerCount;
-        for (int i = 0; i <= headerCount; i++) {
+        for (int i = 0; i < headerCount; i++) {
             count += getItemCountForSection(i);
         }
         return count;
