@@ -18,11 +18,11 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
         view = null;
     }
 
-    View getView() {
-        return view;
+    protected V getView() {
+        return (V) view;
     }
 
-    boolean isViewAttached() {
+    protected boolean isViewAttached() {
         return view != null;
     }
 }

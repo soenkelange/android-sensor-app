@@ -13,20 +13,20 @@ import static org.mockito.Mockito.verify;
  */
 public class FragmentLifecycleDelegateTest {
 
-    private PresenterViewBinder viewBinder;
     private FragmentLifecycleDelegate lifecycleDelegate;
 
     @Before
     public void setUp() throws Exception {
-        viewBinder = mock(PresenterViewBinder.class);
-        lifecycleDelegate = new FragmentLifecycleDelegate(viewBinder);
+        PresenterProvider presenterProvider = mock(PresenterProvider.class);
+        ViewProvider viewProvider = mock(ViewProvider.class);
+        lifecycleDelegate = new FragmentLifecycleDelegate(presenterProvider, viewProvider);
     }
 
     @Test
     public void onViewCreated_ShouldAttachView() {
         lifecycleDelegate.onViewCreated(mock(android.view.View.class), new Bundle());
 
-        verify(viewBinder).attachView();
+        verify(lifecycleDelegate.getPresenterViewBinder()).attachView();
     }
 
 
@@ -34,6 +34,6 @@ public class FragmentLifecycleDelegateTest {
     public void onDestroyView_ShouldDetachView() {
         lifecycleDelegate.onDestroyView();
 
-        verify(viewBinder).detachView();
+        verify(lifecycleDelegate.getPresenterViewBinder()).detachView();
     }
 }
