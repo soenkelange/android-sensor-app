@@ -77,8 +77,7 @@ public abstract class MvpFragment<P extends Presenter<V>, V extends de.haw_hambu
 
     private FragmentLifecycleDelegate<P, V> getLifecycleDelegate() {
         if (lifecycleDelegate == null) {
-            PresenterViewBinder<P, V>  viewBinder = new PresenterViewBinder<>(this, this);
-            lifecycleDelegate = new FragmentLifecycleDelegate<>(viewBinder);
+            lifecycleDelegate = new FragmentLifecycleDelegate<>(this, this);
         }
         return lifecycleDelegate;
     }
