@@ -43,9 +43,9 @@ public abstract class SectionedRecyclerViewAdapter<HVH extends RecyclerView.View
         }
     }
 
-    public abstract void onBindHeaderViewHolder(HVH holder, int header);
+    public abstract void onBindHeaderViewHolder(HVH holder, int section);
 
-    public abstract void onBindItemViewHolder(IVH holder, int header, int item);
+    public abstract void onBindItemViewHolder(IVH holder, int section, int item);
 
     @Override
     public int getItemCount() {
