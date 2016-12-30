@@ -22,4 +22,8 @@ public class PresenterViewBinder<P extends Presenter<V>, V extends View> {
     public void detachView() {
         presenter.detachView();
     }
+
+    public P getPresenter() {
+        return presenter;
+    }
 }

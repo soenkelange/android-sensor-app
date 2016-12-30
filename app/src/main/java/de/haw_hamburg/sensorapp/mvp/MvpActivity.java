@@ -55,7 +55,7 @@ public abstract class MvpActivity<P extends Presenter<V>, V extends de.haw_hambu
         getLifecycleDelegate().onDestroy();
     }
 
-    public ActivityLifecycleDelegate getLifecycleDelegate() {
+    public ActivityLifecycleDelegate<P, V> getLifecycleDelegate() {
         if (lifecycleDelegate == null) {
             PresenterViewBinder presenterViewBinder = new PresenterViewBinder(this, this);
             lifecycleDelegate = new ActivityLifecycleDelegate(presenterViewBinder);
@@ -66,5 +66,9 @@ public abstract class MvpActivity<P extends Presenter<V>, V extends de.haw_hambu
     @Override
     public V provideView() {
         return (V) this;
+    }
+
+    public P getPresenter() {
+        return getLifecycleDelegate().getPresenter();
     }
 }

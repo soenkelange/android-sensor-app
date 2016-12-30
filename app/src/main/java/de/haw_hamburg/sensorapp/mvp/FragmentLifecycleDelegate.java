@@ -6,11 +6,11 @@ import android.view.View;
 /**
  * Created by s.lange on 26.12.16.
  */
-public class FragmentLifecycleDelegate {
+public class FragmentLifecycleDelegate<P extends Presenter<V>, V extends de.haw_hamburg.sensorapp.mvp.View> {
 
-    private final PresenterViewBinder viewBinder;
+    private final PresenterViewBinder<P, V> viewBinder;
 
-    public FragmentLifecycleDelegate(PresenterViewBinder viewBinder) {
+    public FragmentLifecycleDelegate(PresenterViewBinder<P, V> viewBinder) {
         this.viewBinder = viewBinder;
     }
 
@@ -47,5 +47,9 @@ public class FragmentLifecycleDelegate {
     }
 
     public void onDetach() {
+    }
+
+    public P getPresenter() {
+        return viewBinder.getPresenter();
     }
 }

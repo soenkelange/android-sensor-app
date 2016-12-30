@@ -5,11 +5,11 @@ import android.os.Bundle;
 /**
  * Created by s.lange on 26.12.16.
  */
-public class ActivityLifecycleDelegate {
+public class ActivityLifecycleDelegate<P extends Presenter<V>, V extends de.haw_hamburg.sensorapp.mvp.View> {
 
-    private final PresenterViewBinder viewBinder;
+    private final PresenterViewBinder<P, V> viewBinder;
 
-    public ActivityLifecycleDelegate(PresenterViewBinder viewBinder) {
+    public ActivityLifecycleDelegate(PresenterViewBinder<P, V> viewBinder) {
         this.viewBinder = viewBinder;
     }
 
@@ -37,5 +37,9 @@ public class ActivityLifecycleDelegate {
 
     public void onDestroy() {
         viewBinder.detachView();
+    }
+
+    public P getPresenter() {
+        return viewBinder.getPresenter();
     }
 }
