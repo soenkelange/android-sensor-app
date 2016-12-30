@@ -12,26 +12,26 @@ import static org.mockito.Mockito.verify;
  * Created by s.lange on 29.12.16.
  */
 public class ActivityLifecycleDelegateTest {
+    private PresenterViewBinder presenterViewBinder;
     private ActivityLifecycleDelegate lifecycleDelegate;
 
     @Before
     public void setUp() throws Exception {
-        PresenterProvider presenterProvider = mock(PresenterProvider.class);
-        ViewProvider viewProvider = mock(ViewProvider.class);
-        lifecycleDelegate = new ActivityLifecycleDelegate(presenterProvider, viewProvider);
+        presenterViewBinder = mock(PresenterViewBinder.class);
+        lifecycleDelegate = new ActivityLifecycleDelegate(presenterViewBinder);
     }
 
     @Test
     public void onCreate_ShouldAttachView() {
         lifecycleDelegate.onCreate(new Bundle());
 
-        verify(lifecycleDelegate.getPresenterViewBinder()).attachView();
+        verify(presenterViewBinder).attachView();
     }
 
     @Test
     public void onDestroy_ShouldDetachView() {
         lifecycleDelegate.onDestroy();
 
-        verify(lifecycleDelegate.getPresenterViewBinder()).detachView();
+        verify(presenterViewBinder).detachView();
     }
 }
