@@ -4,6 +4,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import rx.Emitter;
 import rx.Observable;
@@ -44,14 +47,26 @@ public class RxSensorManager {
                     public void onAccuracyChanged(Sensor sensor, int accuracy) {
                     }
                 };
+                if (Looper.myLooper() == null) {
+                    Looper.prepare();
+                }
                 sensorEventEmitter.setCancellation(new Cancellable() {
                     @Override
                     public void cancel() throws Exception {
                         sensorManager.unregisterListener(listener);
+                        if (Looper.myLooper() != null) {
+                            Looper.myLooper().quit();
+                        }
                     }
                 });
                 Sensor sensor = sensorManager.getDefaultSensor(sensorType);
-                sensorManager.registerListener(listener, sensor, samplingPeriodUs);
+                sensorManager.registerListener(listener, sensor, samplingPeriodUs, new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(Message msg) {
+                        return true;
+                    }
+                }));
+                Looper.loop();
             }
         }, Emitter.BackpressureMode.BUFFER);
     }
