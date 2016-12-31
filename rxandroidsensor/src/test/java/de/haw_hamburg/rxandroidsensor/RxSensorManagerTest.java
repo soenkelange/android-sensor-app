@@ -61,6 +61,18 @@ public class RxSensorManagerTest {
     }
 
     @Test
+    public void observeSensorEvent_DefaultSensorIsNull_ShouldEmitError() {
+        when(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)).thenReturn(null);
+
+        TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
+        rxSensorManager.observeSensorEvents(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_FASTEST)
+                .subscribe(subscriber);
+
+        subscriber.assertNoValues();
+        subscriber.assertError(SensorNotFoundException.class);
+    }
+
+    @Test
     public void observeSensorEvents_ShouldReturnObservable() {
         Observable<SensorEvent> observable = rxSensorManager.observeSensorEvents(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_FASTEST);
 
