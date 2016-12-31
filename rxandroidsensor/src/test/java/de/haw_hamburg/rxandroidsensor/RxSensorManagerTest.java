@@ -69,15 +69,6 @@ public class RxSensorManagerTest {
     }
 
     @Test
-    public void observeSensorEvents_SubscriberSubscribed_ShouldRegisterListenerToSensorManager() {
-        TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
-        rxSensorManager.observeSensorEvents(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_FASTEST)
-                .subscribe(subscriber);
-
-        verify(sensorManager).registerListener(isA(SensorEventListener.class), same(sensorAccelerometer), eq(SensorManager.SENSOR_DELAY_FASTEST));
-    }
-
-    @Test
     public void observeSensorEvents_SubscriberSubscribed_ShouldEmitSensorEvents() {
         final SensorEvent expectedSensorEvent = mock(SensorEvent.class);
         doAnswer(new Answer() {
@@ -97,7 +88,7 @@ public class RxSensorManagerTest {
     }
 
     @Test
-    public void observeSensorEvents_Unsubscribe_ShouldUnregisterRegisterdListener() {
+    public void observeSensorEvents_UnsubscribeSubscriber_ShouldUnregisterRegisteredListener() {
         TestSubscriber<SensorEvent> subscriber = new TestSubscriber<>();
         rxSensorManager.observeSensorEvents(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_FASTEST)
                 .subscribe(subscriber);
