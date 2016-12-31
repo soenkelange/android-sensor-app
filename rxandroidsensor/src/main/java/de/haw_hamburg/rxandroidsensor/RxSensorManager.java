@@ -22,6 +22,10 @@ public class RxSensorManager {
         this.sensorManager = sensorManager;
     }
 
+    public boolean hasSensor(int sensorType) {
+        return sensorManager.getDefaultSensor(sensorType) != null;
+    }
+
     public Observable<SensorEvent> observeSensorEvents(final int sensorType, final int samplingPeriodUs) {
         return Observable.fromEmitter(new Action1<Emitter<SensorEvent>>() {
             @Override

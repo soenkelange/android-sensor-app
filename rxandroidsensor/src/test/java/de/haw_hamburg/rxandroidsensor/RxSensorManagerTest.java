@@ -14,7 +14,9 @@ import org.mockito.stubbing.Answer;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Matchers.same;
@@ -39,6 +41,23 @@ public class RxSensorManagerTest {
         sensorAccelerometer = mock(Sensor.class);
         when(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)).thenReturn(sensorAccelerometer);
         rxSensorManager = new RxSensorManager(sensorManager);
+    }
+
+    @Test
+    public void hasSensor_DefaultSensorIsNull_ShouldReturnFalse() {
+        int sensorType = Sensor.TYPE_AMBIENT_TEMPERATURE;
+        when(sensorManager.getDefaultSensor(sensorType)).thenReturn(null);
+
+        assertFalse(rxSensorManager.hasSensor(sensorType));
+    }
+
+    @Test
+    public void hasSensor_DefaultSensorIsNotNull_ShouldReturnTrue() {
+        int sensorType = Sensor.TYPE_AMBIENT_TEMPERATURE;
+        Sensor sensor = mock(Sensor.class);
+        when(sensorManager.getDefaultSensor(sensorType)).thenReturn(sensor);
+
+        assertTrue(rxSensorManager.hasSensor(sensorType));
     }
 
     @Test
