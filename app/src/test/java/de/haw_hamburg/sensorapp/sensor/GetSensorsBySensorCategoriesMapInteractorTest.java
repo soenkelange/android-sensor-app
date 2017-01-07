@@ -21,10 +21,10 @@ import static org.mockito.Mockito.when;
 /**
  * Created by s.lange on 07.01.17.
  */
-public class GetSensorBySensorCategoryMapTest {
+public class GetSensorsBySensorCategoriesMapInteractorTest {
 
     private SensorManager sensorManager;
-    private GetSensorBySensorCategoryMap interactor;
+    private GetSensorsBySensorCategoriesMapInteractor interactor;
     private Sensor accelerometerSensor;
     private Sensor magneticFieldSensor;
     private Sensor lightSensor;
@@ -42,7 +42,7 @@ public class GetSensorBySensorCategoryMapTest {
         when(ambientTemperatureSensor.getType()).thenReturn(Sensor.TYPE_AMBIENT_TEMPERATURE);
 
         sensorManager = mock(SensorManager.class);
-        interactor = new GetSensorBySensorCategoryMap(sensorManager);
+        interactor = new GetSensorsBySensorCategoriesMapInteractor(sensorManager);
         interactor.setMotionSensorTypes(singletonList(Sensor.TYPE_ACCELEROMETER));
         interactor.setPositionSensorTypes(singletonList(Sensor.TYPE_MAGNETIC_FIELD));
         interactor.setEnvironmentSensorTypes(singletonList(Sensor.TYPE_AMBIENT_TEMPERATURE));
@@ -50,7 +50,7 @@ public class GetSensorBySensorCategoryMapTest {
 
     @Test
     public void construct_ShouldSetDefaultSensorCategories() {
-        interactor = new GetSensorBySensorCategoryMap(sensorManager);
+        interactor = new GetSensorsBySensorCategoriesMapInteractor(sensorManager);
 
         assertThat(interactor.getMotionSensorTypes())
                 .containsOnly(

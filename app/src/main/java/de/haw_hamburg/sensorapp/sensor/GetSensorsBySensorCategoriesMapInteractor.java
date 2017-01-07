@@ -14,7 +14,7 @@ import rx.Observable;
 /**
  * Created by s.lange on 07.01.17.
  */
-public class GetSensorBySensorCategoryMap {
+public class GetSensorsBySensorCategoriesMapInteractor {
 
     private static final List<Integer> MOTION_SENSOR_TYPES = Arrays.asList(
             Sensor.TYPE_ACCELEROMETER,
@@ -44,7 +44,7 @@ public class GetSensorBySensorCategoryMap {
     private List<Integer> positionSensorTypes = POSITION_SENSOR_TYPES;
     private List<Integer> environmentSensorTypes = ENVIRONMENT_SENSOR_TYPES;
 
-    public GetSensorBySensorCategoryMap(SensorManager sensorManager) {
+    public GetSensorsBySensorCategoriesMapInteractor(SensorManager sensorManager) {
         this.sensorManager = sensorManager;
     }
 
