@@ -11,7 +11,11 @@ public class FragmentLifecycleDelegate<P extends Presenter<V>, V extends de.haw_
     private final PresenterViewBinder<P, V> viewBinder;
 
     public FragmentLifecycleDelegate(PresenterProvider<P> presenterProvider, ViewProvider<V> viewProvider) {
-        viewBinder = new PresenterViewBinder<>(presenterProvider, viewProvider);
+        this(new PresenterViewBinder<>(presenterProvider, viewProvider));
+    }
+
+    FragmentLifecycleDelegate(PresenterViewBinder viewBinder) {
+        this.viewBinder = viewBinder;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -51,9 +55,5 @@ public class FragmentLifecycleDelegate<P extends Presenter<V>, V extends de.haw_
 
     public P getPresenter() {
         return viewBinder.getPresenter();
-    }
-
-    PresenterViewBinder getPresenterViewBinder() {
-        return viewBinder;
     }
 }

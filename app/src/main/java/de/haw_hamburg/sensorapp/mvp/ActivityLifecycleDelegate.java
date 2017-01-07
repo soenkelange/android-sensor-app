@@ -10,7 +10,11 @@ public class ActivityLifecycleDelegate<P extends Presenter<V>, V extends de.haw_
     private final PresenterViewBinder<P, V> viewBinder;
 
     public ActivityLifecycleDelegate(PresenterProvider<P> presenterProvider, ViewProvider<V> viewProvider) {
-        viewBinder = new PresenterViewBinder<>(presenterProvider, viewProvider);
+        this(new PresenterViewBinder<>(presenterProvider, viewProvider));
+    }
+
+    ActivityLifecycleDelegate(PresenterViewBinder viewBinder) {
+        this.viewBinder = viewBinder;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -41,9 +45,5 @@ public class ActivityLifecycleDelegate<P extends Presenter<V>, V extends de.haw_
 
     public P getPresenter() {
         return viewBinder.getPresenter();
-    }
-
-    PresenterViewBinder getPresenterViewBinder() {
-        return viewBinder;
     }
 }
