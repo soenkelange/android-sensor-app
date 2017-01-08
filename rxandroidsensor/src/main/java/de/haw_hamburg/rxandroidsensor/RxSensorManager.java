@@ -5,6 +5,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+
 import rx.Emitter;
 import rx.Observable;
 import rx.functions.Action1;
@@ -20,6 +23,16 @@ public class RxSensorManager {
 
     public RxSensorManager(SensorManager sensorManager) {
         this.sensorManager = sensorManager;
+    }
+
+
+    public Observable<List<Sensor>> getSensorList(final int type) {
+        return Observable.fromCallable(new Callable<List<Sensor>>() {
+            @Override
+            public List<Sensor> call() throws Exception {
+                return sensorManager.getSensorList(type);
+            }
+        });
     }
 
     public boolean hasSensor(int sensorType) {

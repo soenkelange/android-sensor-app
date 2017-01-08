@@ -11,6 +11,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
@@ -41,6 +44,29 @@ public class RxSensorManagerTest {
         sensorAccelerometer = mock(Sensor.class);
         when(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)).thenReturn(sensorAccelerometer);
         rxSensorManager = new RxSensorManager(sensorManager);
+    }
+
+    @Test
+    public void getAllSensors_ShouldReturnObservable() {
+        List<Sensor> sensorList = new ArrayList<>();
+        when(sensorManager.getSensorList(Sensor.TYPE_ALL)).thenReturn(sensorList);
+
+        Observable<List<Sensor>> observable = rxSensorManager.getSensorList(Sensor.TYPE_ALL);
+
+        assertNotNull(observable);
+    }
+
+    @Test
+    public void getAllSensors_SubscriberSubscribed_ShouldEmitSensorList() {
+        List<Sensor> sensorList = new ArrayList<>();
+        when(sensorManager.getSensorList(Sensor.TYPE_ALL)).thenReturn(sensorList);
+
+        TestSubscriber<List<Sensor>> subscriber = new TestSubscriber<>();
+        rxSensorManager.getSensorList(Sensor.TYPE_ALL)
+                .subscribe(subscriber);
+
+        subscriber.assertValue(sensorList);
+        subscriber.assertCompleted();
     }
 
     @Test
