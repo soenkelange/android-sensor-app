@@ -77,6 +77,7 @@ public class RxSensorManagerTest {
         Observable<SensorEvent> observable = rxSensorManager.observeSensorEvents(Sensor.TYPE_ACCELEROMETER, SensorManager.SENSOR_DELAY_FASTEST);
 
         assertNotNull(observable);
+        verify(sensorManager).getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         verifyNoMoreInteractions(sensorManager);
     }
 
