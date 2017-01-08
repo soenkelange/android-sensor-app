@@ -40,8 +40,7 @@ public class RxSensorManager {
     }
 
     public Observable<SensorEvent> observeSensorEvents(final int sensorType, final int samplingPeriodUs) {
-        if (!hasSensor(sensorType))
-        {
+        if (!hasSensor(sensorType)) {
             return Observable.error(new SensorNotFoundException(sensorType));
         }
         return Observable.fromEmitter(new Action1<Emitter<SensorEvent>>() {
