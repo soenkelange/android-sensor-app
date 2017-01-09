@@ -2,11 +2,9 @@ package de.haw_hamburg.sensorapp.mvp;
 
 import android.os.Bundle;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -24,16 +22,14 @@ public class ActivityLifecycleDelegateTest {
     }
 
     @Test
-    public void onCreate_ShouldAttachView()
-    {
+    public void onCreate_ShouldAttachView() {
         lifecycleDelegate.onCreate(new Bundle());
 
         verify(presenterViewBinder).attachView();
     }
 
     @Test
-    public void onDestroy_ShouldDetachView()
-    {
+    public void onDestroy_ShouldDetachView() {
         lifecycleDelegate.onDestroy();
 
         verify(presenterViewBinder).detachView();
