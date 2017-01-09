@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,18 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 
 public class CompassFragment extends Fragment{
 
     Compass compass;
+    RadioButton hardwareSensorButton;
+    RadioButton softwareSensorButton;
+    SeekBar seekBar;
+    TextView progressTextView;
 
     public CompassFragment(){
 
@@ -26,12 +34,76 @@ public class CompassFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_compass, container, false);
+        hardwareSensorButton = (RadioButton)rootView.findViewById(R.id.hardwareSensorButton);
+        softwareSensorButton = (RadioButton)rootView.findViewById(R.id.softwareSensorButton);
+        seekBar = (SeekBar)rootView.findViewById(R.id.seekBar);
+        progressTextView = (TextView)rootView.findViewById(R.id.progressTextView);
+
+        seekBar.setMax(100);
+        seekBar.setProgress(0);
+        seekBar.setEnabled(false);
 
         if (compass == null){
             compass = new Compass(getContext());
             compass.compassView = (ImageView)rootView.findViewById(R.id.compass);
         }
+
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        hardwareSensorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRadioButtonClicked(view);
+            }
+        });
+        softwareSensorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRadioButtonClicked(view);
+            }
+        });
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                compass.setLowPassFilter(i);
+                progressTextView.setText("LowPassFilter: "+i+"%");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    public void onRadioButtonClicked(View view){
+        boolean checked = ((RadioButton)view).isChecked();
+        switch (view.getId()){
+            case R.id.hardwareSensorButton:
+                if(checked){
+                    seekBar.setEnabled(true);
+                    seekBar.setProgress(compass.getLowPassFilter());
+                    progressTextView.setText("LowPassFilter: "+seekBar.getProgress()+"%");
+                    compass.setOption(1);
+                }
+                break;
+            case R.id.softwareSensorButton:
+                if(checked){
+                    seekBar.setEnabled(false);
+                    progressTextView.setText("");
+                    compass.setOption(2);
+                }
+                break;
+        }
     }
 
     @Override
@@ -68,12 +140,16 @@ public class CompassFragment extends Fragment{
         private float azimuth = 0;
         private float currentAzimuth = 0;
         private ImageView compassView = null;
+        private int option;
+        private float lowPassFilter;
 
         public Compass(Context context){
             sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             gravitiySensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
             rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            option = 2;
+            lowPassFilter = 0.95f;
         }
 
         public void start(){
@@ -84,6 +160,18 @@ public class CompassFragment extends Fragment{
 
         public void stop(){
             sensorManager.unregisterListener(this);
+        }
+
+        public void setOption(int i){
+            option = i;
+        }
+
+        public void setLowPassFilter(int i){
+            lowPassFilter = (float)i/100;
+        }
+
+        public int getLowPassFilter(){
+            return (int)(lowPassFilter*100);
         }
 
         private void rotateCompass(){
@@ -99,8 +187,7 @@ public class CompassFragment extends Fragment{
 
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
-            float lowPassFilter = 0.95f;
-            int option = 2;
+
             switch (option) {
                 case 1:
                     synchronized (this) {
