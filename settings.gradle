@@ -1,2 +1,2 @@
 rootProject.name = 'sensor-app'
-include ':app'
+include ':app', ':rxandroidsensor'
