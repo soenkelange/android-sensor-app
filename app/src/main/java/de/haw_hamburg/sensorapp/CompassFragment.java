@@ -21,11 +21,11 @@ import android.widget.TextView;
 
 public class CompassFragment extends Fragment{
 
-    Compass compass;
-    RadioButton hardwareSensorButton;
-    RadioButton softwareSensorButton;
-    SeekBar seekBar;
-    TextView progressTextView;
+    private Compass compass;
+    private RadioButton hardwareSensorButton;
+    private RadioButton softwareSensorButton;
+    private SeekBar seekBar;
+    private TextView progressTextView;
 
     public CompassFragment(){
 
@@ -38,15 +38,15 @@ public class CompassFragment extends Fragment{
         softwareSensorButton = (RadioButton)rootView.findViewById(R.id.softwareSensorButton);
         seekBar = (SeekBar)rootView.findViewById(R.id.seekBar);
         progressTextView = (TextView)rootView.findViewById(R.id.progressTextView);
-
+        progressTextView.setVisibility(TextView.INVISIBLE);
         seekBar.setMax(100);
-        seekBar.setProgress(0);
         seekBar.setEnabled(false);
 
         if (compass == null){
             compass = new Compass(getContext());
             compass.compassView = (ImageView)rootView.findViewById(R.id.compass);
         }
+        seekBar.setProgress((int)(compass.getLowPassFilter()*100));
 
         return rootView;
     }
@@ -69,8 +69,8 @@ public class CompassFragment extends Fragment{
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                compass.setLowPassFilter(i);
-                progressTextView.setText("LowPassFilter: "+i+"%");
+                compass.setLowPassFilter((float)i/100);
+                progressTextView.setText(getResources().getStringArray(R.array.compass_fragment_textView)[0]+i+getResources().getStringArray(R.array.compass_fragment_textView)[1]);
             }
 
             @Override
@@ -91,16 +91,17 @@ public class CompassFragment extends Fragment{
             case R.id.hardwareSensorButton:
                 if(checked){
                     seekBar.setEnabled(true);
-                    seekBar.setProgress(compass.getLowPassFilter());
-                    progressTextView.setText("LowPassFilter: "+seekBar.getProgress()+"%");
-                    compass.setOption(1);
+                    seekBar.setProgress((int)(compass.getLowPassFilter()*100));
+                    progressTextView.setVisibility(TextView.VISIBLE);
+                    progressTextView.setText(getResources().getStringArray(R.array.compass_fragment_textView)[0]+seekBar.getProgress()+getResources().getStringArray(R.array.compass_fragment_textView)[1]);
+                    compass.setCurrentlyUsedSensor(compass.USE_HARDWARE_SENSOR);
                 }
                 break;
             case R.id.softwareSensorButton:
                 if(checked){
                     seekBar.setEnabled(false);
-                    progressTextView.setText("");
-                    compass.setOption(2);
+                    progressTextView.setVisibility(TextView.INVISIBLE);
+                    compass.setCurrentlyUsedSensor(compass.USE_SOFTWARE_SENSOR);
                 }
                 break;
         }
@@ -108,26 +109,14 @@ public class CompassFragment extends Fragment{
 
     @Override
     public void onPause(){
-        compass.stop();
         super.onPause();
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        compass.start();
+        compass.stop();
     }
 
     @Override
     public void onResume(){
         super.onResume();
         compass.start();
-    }
-
-    @Override
-    public void onStop(){
-        compass.stop();
-        super.onStop();
     }
 
     class Compass implements SensorEventListener{
@@ -140,15 +129,17 @@ public class CompassFragment extends Fragment{
         private float azimuth = 0;
         private float currentAzimuth = 0;
         private ImageView compassView = null;
-        private int option;
+        private int currentlyUsedSensor;
         private float lowPassFilter;
+        private final int USE_HARDWARE_SENSOR = 1001;
+        private final int USE_SOFTWARE_SENSOR = 1002;
 
         public Compass(Context context){
             sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             gravitiySensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
             rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            option = 2;
+            currentlyUsedSensor = USE_SOFTWARE_SENSOR;
             lowPassFilter = 0.95f;
         }
 
@@ -162,16 +153,16 @@ public class CompassFragment extends Fragment{
             sensorManager.unregisterListener(this);
         }
 
-        public void setOption(int i){
-            option = i;
+        public void setCurrentlyUsedSensor(int i){
+            currentlyUsedSensor = i;
         }
 
-        public void setLowPassFilter(int i){
-            lowPassFilter = (float)i/100;
+        public void setLowPassFilter(float i){
+            lowPassFilter = i;
         }
 
-        public int getLowPassFilter(){
-            return (int)(lowPassFilter*100);
+        public float getLowPassFilter(){
+            return lowPassFilter;
         }
 
         private void rotateCompass(){
@@ -185,47 +176,53 @@ public class CompassFragment extends Fragment{
             }
         }
 
+        private float applyLowPassFilter(float currentValue, float targetValue){
+            return (lowPassFilter * currentValue + (1-lowPassFilter)*targetValue);
+        }
+
+        private float calculateAzimuth(float[] rotationMatrix){
+            float orientation[] = new float[3];
+            SensorManager.getOrientation(rotationMatrix, orientation);
+            float i = (float) Math.toDegrees(orientation[0]);
+            i = (i +360) % 360;
+            return i;
+        }
+
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
 
-            switch (option) {
-                case 1:
-                    synchronized (this) {
-                        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                            currentGravityValues[0] = lowPassFilter * currentGravityValues[0] + (1 - lowPassFilter) * sensorEvent.values[0];
-                            currentGravityValues[1] = lowPassFilter * currentGravityValues[1] + (1 - lowPassFilter) * sensorEvent.values[1];
-                            currentGravityValues[2] = lowPassFilter * currentGravityValues[2] + (1 - lowPassFilter) * sensorEvent.values[2];
+            switch (currentlyUsedSensor) {
+                case USE_HARDWARE_SENSOR: {
+
+                    if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                        for (int i = 0; i < currentGravityValues.length; i++) {
+                            currentGravityValues[i] = applyLowPassFilter(currentGravityValues[i], sensorEvent.values[i]);
                         }
-                        if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-                            currentMagneticValues[0] = lowPassFilter * currentMagneticValues[0] + (1 - lowPassFilter) * sensorEvent.values[0];
-                            currentMagneticValues[1] = lowPassFilter * currentMagneticValues[1] + (1 - lowPassFilter) * sensorEvent.values[1];
-                            currentMagneticValues[2] = lowPassFilter * currentMagneticValues[2] + (1 - lowPassFilter) * sensorEvent.values[2];
+                    } else if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                        for (int i = 0; i < currentMagneticValues.length; i++) {
+                            currentMagneticValues[i] = applyLowPassFilter(currentMagneticValues[i], sensorEvent.values[i]);
                         }
-                        float inclinationMatrix[] = new float[9];
-                        float rotationMatrix[] = new float[9];
-                        boolean validRotationResult = SensorManager.getRotationMatrix(rotationMatrix, inclinationMatrix, currentGravityValues, currentMagneticValues);
-                        if (validRotationResult) {
-                            float orientation[] = new float[3];
-                            SensorManager.getOrientation(rotationMatrix, orientation);
-                            azimuth = (float) Math.toDegrees(orientation[0]);
-                            azimuth = (azimuth + 360) % 360;
-                            rotateCompass();
-                        }
-                        break;
                     }
-                case 2:
-                    synchronized (this){
-                        if (sensorEvent.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR){
-                            float[] orientation = new float[3];
-                            float[] rotationMatrix = new float[9];
-                            SensorManager.getRotationMatrixFromVector(rotationMatrix, sensorEvent.values);
-                            SensorManager.getOrientation(rotationMatrix, orientation);
-                            azimuth = (float)Math.toDegrees(orientation[0]);
-                            azimuth = (azimuth + 360) % 360;
-                            rotateCompass();
-                        }
+                    float inclinationMatrix[] = new float[9];
+                    float rotationMatrix[] = new float[9];
+                    boolean validRotationResult = SensorManager.getRotationMatrix(rotationMatrix, inclinationMatrix, currentGravityValues, currentMagneticValues);
+                    if (validRotationResult) {
+                        azimuth = calculateAzimuth(rotationMatrix);
+                        rotateCompass();
                     }
                     break;
+                }
+
+                case USE_SOFTWARE_SENSOR: {
+
+                    if (sensorEvent.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+                        float[] rotationMatrix = new float[9];
+                        SensorManager.getRotationMatrixFromVector(rotationMatrix, sensorEvent.values);
+                        azimuth = calculateAzimuth(rotationMatrix);
+                        rotateCompass();
+                    }
+                    break;
+                }
             }
         }
 

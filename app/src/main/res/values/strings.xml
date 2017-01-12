@@ -2,4 +2,8 @@
     <string name="app_name">Sensor App</string>
     <string name="main.tab.compass">Compass</string>
     <string name="main.tab.spiritLevel">Spirit Level</string>
+    <string-array name="compass_fragment_textView">
+        <item>Low-pass filter: </item>
+        <item>%</item>
+    </string-array>
 </resources>
