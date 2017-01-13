@@ -39,22 +39,13 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:layout_below="@+id/seekBar"
-        android:layout_centerHorizontal="true"
-        android:text=""/>
+        android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:id="@+id/compass"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/compass_face"/>
-
-    <ImageView
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/compass_dial"/>
+    <de.haw_hamburg.sensorapp.CompassView
+        android:id="@+id/compassView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+    </de.haw_hamburg.sensorapp.CompassView>
 
 </RelativeLayout>

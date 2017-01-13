@@ -3,7 +3,7 @@
     <string name="main.tab.compass">Compass</string>
     <string name="main.tab.spiritLevel">Spirit Level</string>
     <string-array name="compass_fragment_textView">
-        <item>Low-pass filter: </item>
+        <item>Low-pass Filter:\u0020</item>
         <item>%</item>
     </string-array>
 </resources>
