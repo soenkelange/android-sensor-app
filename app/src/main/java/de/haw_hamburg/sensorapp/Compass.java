@@ -21,18 +21,14 @@ class Compass implements SensorEventListener {
     public final int USE_SOFTWARE_SENSOR = 1002;
     private OnAzimuthChangedListener onAzimuthChangedListener;
 
-    public Compass(Context context, Fragment fragment) {
+    public Compass(Context context, OnAzimuthChangedListener listener) {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         gravitiySensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         currentlyUsedSensor = USE_SOFTWARE_SENSOR;
         lowPassFilter = 0.95f;
-        try {
-            onAzimuthChangedListener = (OnAzimuthChangedListener)fragment;
-        } catch (ClassCastException e){
-            throw new ClassCastException(context.toString());
-        }
+        onAzimuthChangedListener = listener;
     }
 
     public interface OnAzimuthChangedListener {
