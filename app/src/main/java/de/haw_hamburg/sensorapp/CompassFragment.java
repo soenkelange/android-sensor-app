@@ -84,7 +84,6 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
             case R.id.hardwareSensorButton:
                 if(checked){
                     seekBar.setEnabled(true);
-                    seekBar.setProgress((int)(compass.getLowPassFilter()*100));
                     progressTextView.setVisibility(TextView.VISIBLE);
                     progressTextView.setText(getResources().getStringArray(R.array.compass_fragment_textView)[0]+seekBar.getProgress()+getResources().getStringArray(R.array.compass_fragment_textView)[1]);
                     compass.setCurrentlyUsedSensor(compass.USE_HARDWARE_SENSOR);
