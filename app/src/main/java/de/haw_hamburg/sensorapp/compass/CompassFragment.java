@@ -33,13 +33,13 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
         softwareSensorButton = (RadioButton) rootView.findViewById(R.id.softwareSensorButton);
         progressTextView = (TextView) rootView.findViewById(R.id.progressTextView);
         progressTextView.setVisibility(TextView.INVISIBLE);
+        if (compass == null) {
+            compass = new Compass(getContext(), this);
+        }
         seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
         seekBar.setMax(100);
         seekBar.setEnabled(false);
         seekBar.setProgress((int) (compass.getLowPassFilter() * 100));
-        if (compass == null) {
-            compass = new Compass(getContext(), this);
-        }
         return rootView;
     }
 
