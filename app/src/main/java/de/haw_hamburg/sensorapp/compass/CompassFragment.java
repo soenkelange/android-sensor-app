@@ -52,7 +52,8 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 compass.setLowPassFilter((float) i / 100);
-                progressTextView.setText(getResources().getStringArray(R.array.compass_fragment_textView)[0] + i + getResources().getStringArray(R.array.compass_fragment_textView)[1]);
+                String formattedText = String.format(getString(R.string.compass_currentLowPassFilterValue), i);
+                progressTextView.setText(formattedText);
             }
 
             @Override
@@ -71,8 +72,9 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
             case R.id.hardwareSensorButton:
                 if (checked) {
                     seekBar.setEnabled(true);
+                    String formattedText = String.format(getString(R.string.compass_currentLowPassFilterValue), seekBar.getProgress());
                     progressTextView.setVisibility(TextView.VISIBLE);
-                    progressTextView.setText(getResources().getStringArray(R.array.compass_fragment_textView)[0] + seekBar.getProgress() + getResources().getStringArray(R.array.compass_fragment_textView)[1]);
+                    progressTextView.setText(formattedText);
                     compass.setCurrentlyUsedSensor(Compass.USE_HARDWARE_SENSOR);
                 }
                 break;
