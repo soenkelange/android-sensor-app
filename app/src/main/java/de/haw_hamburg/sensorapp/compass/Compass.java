@@ -5,39 +5,33 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.v4.app.Fragment;
 
 class Compass implements SensorEventListener {
 
+    public static final int USE_HARDWARE_SENSOR = 1001;
+    public static final int USE_SOFTWARE_SENSOR = 1002;
+    private static final float DEFAULT_LOW_PASS_FILTER = 0.95f;
     private SensorManager sensorManager;
-    private Sensor gravitiySensor;
+    private Sensor gravitySensor;
     private Sensor magneticSensor;
     private Sensor rotationVectorSensor;
     private float[] currentGravityValues = new float[3];
     private float[] currentMagneticValues = new float[3];
-    private int currentlyUsedSensor;
-    private float lowPassFilter;
-    public final int USE_HARDWARE_SENSOR = 1001;
-    public final int USE_SOFTWARE_SENSOR = 1002;
+    private int currentlyUsedSensor = USE_SOFTWARE_SENSOR;
+    private float lowPassFilter = DEFAULT_LOW_PASS_FILTER;
     private OnAzimuthChangedListener onAzimuthChangedListener;
 
     public Compass(Context context, OnAzimuthChangedListener listener) {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        gravitiySensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        currentlyUsedSensor = USE_SOFTWARE_SENSOR;
-        lowPassFilter = 0.95f;
         onAzimuthChangedListener = listener;
-    }
-
-    public interface OnAzimuthChangedListener {
-        public void onAzimuthChanged(float azimuth);
     }
 
     public void start() {
         sensorManager.registerListener(this, rotationVectorSensor, SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(this, gravitiySensor, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_GAME);
         sensorManager.registerListener(this, magneticSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
@@ -49,12 +43,12 @@ class Compass implements SensorEventListener {
         currentlyUsedSensor = i;
     }
 
-    public void setLowPassFilter(float i) {
-        lowPassFilter = i;
-    }
-
     public float getLowPassFilter() {
         return lowPassFilter;
+    }
+
+    public void setLowPassFilter(float i) {
+        lowPassFilter = i;
     }
 
     private float applyLowPassFilter(float currentValue, float targetValue) {
@@ -108,5 +102,9 @@ class Compass implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public interface OnAzimuthChangedListener {
+        void onAzimuthChanged(float azimuth);
     }
 }
