@@ -1,4 +1,4 @@
-package de.haw_hamburg.sensorapp;
+package de.haw_hamburg.sensorapp.compass;
 
 
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import de.haw_hamburg.sensorapp.R;
 
 public class CompassView extends RelativeLayout{
 

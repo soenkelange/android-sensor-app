@@ -1,4 +1,4 @@
-package de.haw_hamburg.sensorapp;
+package de.haw_hamburg.sensorapp.compass;
 
 import android.content.Context;
 import android.hardware.Sensor;

@@ -41,11 +41,11 @@
         android:layout_below="@+id/seekBar"
         android:layout_centerHorizontal="true" />
 
-    <de.haw_hamburg.sensorapp.CompassView
+    <de.haw_hamburg.sensorapp.compass.CompassView
         android:id="@+id/compassView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-    </de.haw_hamburg.sensorapp.CompassView>
+    </de.haw_hamburg.sensorapp.compass.CompassView>
 
 </RelativeLayout>

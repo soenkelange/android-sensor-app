@@ -11,6 +11,8 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.haw_hamburg.sensorapp.compass.CompassFragment;
+
 public class MainActivity extends AppCompatActivity
 {
 

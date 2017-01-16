@@ -1,4 +1,4 @@
-package de.haw_hamburg.sensorapp;
+package de.haw_hamburg.sensorapp.compass;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import de.haw_hamburg.sensorapp.R;
 
 
 public class CompassFragment extends Fragment implements Compass.OnAzimuthChangedListener{
