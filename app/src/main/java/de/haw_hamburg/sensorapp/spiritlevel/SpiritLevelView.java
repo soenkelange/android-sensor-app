@@ -1,13 +1,12 @@
 package de.haw_hamburg.sensorapp.spiritlevel;
 
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -25,6 +24,8 @@ public class SpiritLevelView extends RelativeLayout {
     private int maxSpiritLevelHeight;
     private int maxSpiritLevelWidth;
     private float scalerPitch;
+    private int currentX;
+    private int currentY;
     private static final float BORDER_WIDTH_PERCENTAGE = 0.08f;
     private static final float BORDER_HEIGHT_PERCENTAGE = 80/1700f;
 
@@ -33,6 +34,8 @@ public class SpiritLevelView extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rootView = inflater.inflate(R.layout.view_spirit_level, this, true);
         spiritLevelIndicator = (ImageView) rootView.findViewById(R.id.spiritLevelIndicator);
+        currentX = (int) spiritLevelIndicator.getX();
+        currentY = (int) spiritLevelIndicator.getY();
     }
 
     @Override
@@ -55,15 +58,14 @@ public class SpiritLevelView extends RelativeLayout {
     public void changeSpiritLevel(float pitch, float roll) {
         int targetY = calculatePosition(pitch, maxSpiritLevelHeight, borderOffsetY, indicatorHeight, false);
         int targetX = calculatePosition(roll, maxSpiritLevelWidth, borderOffsetX, indicatorWidth, true);
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(spiritLevelIndicator, ImageView.X, targetX);
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(spiritLevelIndicator, ImageView.Y, targetY);
-        LinearInterpolator interpolator = new LinearInterpolator();
-        animatorX.setInterpolator(interpolator);
-        animatorY.setInterpolator(interpolator);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setInterpolator(interpolator);
-        animatorSet.playTogether(animatorX, animatorY);
-        animatorSet.start();
+        Animation animation = new TranslateAnimation(currentX, targetX, currentY, targetY);
+        currentX = targetX;
+        currentY = targetY;
+        animation.setDuration(500);
+        animation.setRepeatCount(0);
+        animation.setFillAfter(true);
+        spiritLevelIndicator.startAnimation(animation);
+
     }
 
     private int calculatePosition(float input, int dimension, int borderOffset, int indicatorDimension, boolean useRollFilter) {
