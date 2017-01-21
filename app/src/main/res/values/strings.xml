@@ -2,4 +2,7 @@
     <string name="app_name">Sensor App</string>
     <string name="main.tab.compass">Compass</string>
     <string name="main.tab.spiritLevel">Spirit Level</string>
+    <string name="compass.currentLowPassFilterValue">Low-pass filter: %1$d%%</string>
+    <string name="compass.ratioButtons.hardwareSensor">Hardware Sensor</string>
+    <string name="compass.ratioButtons.softwareSensor">Software Sensor</string>
 </resources>
