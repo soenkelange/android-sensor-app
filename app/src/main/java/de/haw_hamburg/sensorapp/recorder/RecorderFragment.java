@@ -7,6 +7,7 @@ import android.view.View;
 
 import de.haw_hamburg.sensorapp.BaseMvpFragment;
 import de.haw_hamburg.sensorapp.R;
+import de.haw_hamburg.sensorapp.SensorApplication;
 
 /**
  * Use the {@link RecorderFragment#newInstance} factory method to
@@ -15,6 +16,7 @@ import de.haw_hamburg.sensorapp.R;
 public class RecorderFragment extends BaseMvpFragment<RecorderPresenter, RecorderView> implements RecorderView {
 
     private RecyclerView sensorsRecyclerView;
+    private RecorderComponent recorderComponent;
 
     public RecorderFragment() {
         // Required empty public constructor
@@ -22,6 +24,15 @@ public class RecorderFragment extends BaseMvpFragment<RecorderPresenter, Recorde
 
     public static RecorderFragment newInstance() {
         return new RecorderFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SensorApplication sensorApplication = (SensorApplication) getActivity().getApplication();
+        recorderComponent = DaggerRecorderComponent.builder()
+                .applicationComponent(sensorApplication.getApplicationComponent())
+                .build();
     }
 
     @Override
@@ -37,6 +48,6 @@ public class RecorderFragment extends BaseMvpFragment<RecorderPresenter, Recorde
 
     @Override
     public RecorderPresenter providePresenter() {
-        return new RecorderPresenter();
+        return recorderComponent.presenter();
     }
 }
