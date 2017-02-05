@@ -5,4 +5,6 @@
     <string name="compass.currentLowPassFilterValue">Low-pass filter: %1$d%%</string>
     <string name="compass.ratioButtons.hardwareSensor">Hardware Sensor</string>
     <string name="compass.ratioButtons.softwareSensor">Software Sensor</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
