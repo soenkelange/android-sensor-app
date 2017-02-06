@@ -1,5 +1,6 @@
 package de.haw_hamburg.sensorapp.spiritlevel;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,13 +32,19 @@ public class SpiritLevelFragment extends Fragment implements SpiritLevel.OnRotat
     @Override
     public void onResume() {
         super.onResume();
-        spiritLevel.start();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            spiritLevel.start();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        spiritLevel.stop();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            spiritLevel.stop();
+        }
     }
 
     @Override

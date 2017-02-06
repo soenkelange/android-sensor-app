@@ -1,5 +1,6 @@
 package de.haw_hamburg.sensorapp.compass;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -91,13 +92,19 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
     @Override
     public void onResume() {
         super.onResume();
-        compass.start();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            compass.start();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        compass.stop();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            compass.stop();
+        }
     }
 
     @Override
