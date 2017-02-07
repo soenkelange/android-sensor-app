@@ -2,7 +2,6 @@ package de.haw_hamburg.sensorapp.compass;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import de.haw_hamburg.sensorapp.R;
+import de.haw_hamburg.sensorapp.navigation.BaseNavigationFragment;
 
 
-public class CompassFragment extends Fragment implements Compass.OnAzimuthChangedListener {
+public class CompassFragment extends BaseNavigationFragment<CompassPresenter, CompassPresenterView> implements Compass.OnAzimuthChangedListener, CompassPresenterView {
 
     private Compass compass;
     private RadioButton hardwareSensorButton;
@@ -27,7 +27,7 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_compass, container, false);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
         compassView = (CompassView) rootView.findViewById(R.id.compassView);
         hardwareSensorButton = (RadioButton) rootView.findViewById(R.id.hardwareSensorButton);
         softwareSensorButton = (RadioButton) rootView.findViewById(R.id.softwareSensorButton);
@@ -41,6 +41,11 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
         seekBar.setEnabled(false);
         seekBar.setProgress((int) (compass.getLowPassFilter() * 100));
         return rootView;
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.fragment_compass;
     }
 
     @Override
@@ -103,5 +108,15 @@ public class CompassFragment extends Fragment implements Compass.OnAzimuthChange
     @Override
     public void onAzimuthChanged(float azimuth) {
         compassView.rotateCompass(azimuth);
+    }
+
+    @Override
+    public String getTitle() {
+        return getString(R.string.compass_title);
+    }
+
+    @Override
+    public CompassPresenter providePresenter() {
+        return new CompassPresenter();
     }
 }
