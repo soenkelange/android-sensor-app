@@ -9,6 +9,7 @@ public class BottomNavigationPresenter extends AbstractPresenter<BottomNavigatio
 
     private static final int COMPASS_VIEW = 1;
     private static final int SPIRIT_LEVEL_VIEW = 2;
+    private static final int RECORDER_VIEW = 3;
     private int currentView;
 
 
@@ -17,13 +18,13 @@ public class BottomNavigationPresenter extends AbstractPresenter<BottomNavigatio
     }
 
     public void onCompassSelected() {
-        if (!isCompassShown()) {
+        if (!isCurrentView(COMPASS_VIEW)) {
             showCompass();
         }
     }
 
     public boolean isCompassShown() {
-        return currentView == COMPASS_VIEW;
+        return isCurrentView(COMPASS_VIEW);
     }
 
     private void showCompass() {
@@ -32,17 +33,28 @@ public class BottomNavigationPresenter extends AbstractPresenter<BottomNavigatio
     }
 
     public void onSpiritLevelSelected() {
-        if (!isSpiritLevelShown()) {
+        if (!isCurrentView(SPIRIT_LEVEL_VIEW)) {
             showSpiritLevel();
         }
-    }
-
-    public boolean isSpiritLevelShown() {
-        return currentView == SPIRIT_LEVEL_VIEW;
     }
 
     private void showSpiritLevel() {
         getView().showSpiritLevel();
         currentView = SPIRIT_LEVEL_VIEW;
+    }
+
+    public void onRecorderSelected() {
+        if (!isCurrentView(RECORDER_VIEW)) {
+            showRecorder();
+        }
+    }
+
+    private void showRecorder() {
+        getView().showRecorder();
+        currentView = RECORDER_VIEW;
+    }
+
+    private boolean isCurrentView(int view) {
+        return currentView == view;
     }
 }

@@ -5,15 +5,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import de.haw_hamburg.sensorapp.BaseMvpFragment;
 import de.haw_hamburg.sensorapp.R;
 import de.haw_hamburg.sensorapp.SensorApplication;
+import de.haw_hamburg.sensorapp.navigation.BaseNavigationFragment;
 
 /**
  * Use the {@link RecorderFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecorderFragment extends BaseMvpFragment<RecorderPresenter, RecorderView> implements RecorderView {
+public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, RecorderView> implements RecorderView {
 
     private RecyclerView sensorsRecyclerView;
     private RecorderComponent recorderComponent;
@@ -49,5 +49,10 @@ public class RecorderFragment extends BaseMvpFragment<RecorderPresenter, Recorde
     @Override
     public RecorderPresenter providePresenter() {
         return recorderComponent.presenter();
+    }
+
+    @Override
+    public String getTitle() {
+        return getString(R.string.recorder_title);
     }
 }

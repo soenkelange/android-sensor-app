@@ -6,8 +6,9 @@ import android.view.MenuItem;
 
 import de.haw_hamburg.sensorapp.BaseMvpActivity;
 import de.haw_hamburg.sensorapp.R;
-import de.haw_hamburg.sensorapp.spiritlevel.SpiritLevelFragment;
 import de.haw_hamburg.sensorapp.compass.CompassFragment;
+import de.haw_hamburg.sensorapp.recorder.RecorderFragment;
+import de.haw_hamburg.sensorapp.spiritlevel.SpiritLevelFragment;
 
 public class BottomNavigationActivity extends BaseMvpActivity<BottomNavigationPresenter, BottomNavigationView> implements BottomNavigationView {
 
@@ -38,6 +39,9 @@ public class BottomNavigationActivity extends BaseMvpActivity<BottomNavigationPr
             case R.id.menu_item_spiritLevel:
                 getPresenter().onSpiritLevelSelected();
                 return true;
+            case R.id.menu_item_recorder:
+                getPresenter().onRecorderSelected();
+                return true;
         }
         return false;
     }
@@ -58,6 +62,11 @@ public class BottomNavigationActivity extends BaseMvpActivity<BottomNavigationPr
     @Override
     public void showSpiritLevel() {
         showFragment(new SpiritLevelFragment());
+    }
+
+    @Override
+    public void showRecorder() {
+        showFragment(new RecorderFragment());
     }
 
     private void showFragment(BaseNavigationFragment fragment) {

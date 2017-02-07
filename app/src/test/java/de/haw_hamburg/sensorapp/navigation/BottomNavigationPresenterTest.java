@@ -66,4 +66,20 @@ public class BottomNavigationPresenterTest {
 
         verify(view, times(1)).showSpiritLevel();
     }
+
+    @Test
+    public void shouldShowRecorder() {
+        bottomNavigationPresenter.onRecorderSelected();
+
+        verify(view).showRecorder();
+    }
+
+    @Test
+    public void whenRecorderIsShown_ShouldNotShowRecorderAgain() {
+        bottomNavigationPresenter.onRecorderSelected();
+
+        bottomNavigationPresenter.onRecorderSelected();
+
+        verify(view, times(1)).showRecorder();
+    }
 }

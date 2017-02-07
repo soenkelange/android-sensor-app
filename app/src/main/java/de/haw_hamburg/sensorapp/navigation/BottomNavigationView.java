@@ -9,4 +9,6 @@ public interface BottomNavigationView extends View {
     void showCompass();
 
     void showSpiritLevel();
+
+    void showRecorder();
 }

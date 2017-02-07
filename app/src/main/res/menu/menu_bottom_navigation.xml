@@ -14,4 +14,10 @@
         android:icon="@drawable/ic_straighten_black_24dp"
         android:title="@string/menu.spiritLevel"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_recorder"
+        android:enabled="true"
+        android:icon="@drawable/ic_fiber_manual_record_black_24dp"
+        android:title="@string/menu.recorder"
+        app:showAsAction="ifRoom" />
 </menu>
