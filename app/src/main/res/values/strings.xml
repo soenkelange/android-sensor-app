@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Sensor App</string>
-    <string name="main.tab.compass">Compass</string>
-    <string name="main.tab.spiritLevel">Spirit Level</string>
-    <string name="main.tab.recorder">Recorder</string>
+    <string name="menu.compass">Compass</string>
+    <string name="menu.spiritLevel">Spirit Level</string>
+    <string name="compass.title">Compass</string>
+    <string name="compass.currentLowPassFilterValue">Low-pass filter: %1$d%%</string>
+    <string name="compass.ratioButtons.hardwareSensor">Hardware Sensor</string>
+    <string name="compass.ratioButtons.softwareSensor">Software Sensor</string>
+    <string name="spiritLevel.title">Spirit Level</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
 
     <string name="recorder.helloWorld">Hello World!</string>
 
