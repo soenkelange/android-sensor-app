@@ -1,5 +1,7 @@
 package de.haw_hamburg.sensorapp.recorder;
 
+import javax.inject.Inject;
+
 import de.haw_hamburg.sensorapp.mvp.AbstractPresenter;
 
 /**
@@ -7,4 +9,8 @@ import de.haw_hamburg.sensorapp.mvp.AbstractPresenter;
  */
 
 public class RecorderPresenter extends AbstractPresenter<RecorderView> {
+
+    @Inject
+    public RecorderPresenter() {
+    }
 }
