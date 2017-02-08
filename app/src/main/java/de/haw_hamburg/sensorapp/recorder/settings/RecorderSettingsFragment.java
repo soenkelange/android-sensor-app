@@ -13,11 +13,11 @@ import de.haw_hamburg.sensorapp.SensorApplication;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecorderSettingsActivityFragment extends BaseMvpFragment<RecorderSettingsPresenter, RecorderSettingsView> implements RecorderSettingsView {
+public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPresenter, RecorderSettingsView> implements RecorderSettingsView {
 
     private RecorderSettingsComponent recorderSettingsComponent;
 
-    public RecorderSettingsActivityFragment() {
+    public RecorderSettingsFragment() {
     }
 
     @Override

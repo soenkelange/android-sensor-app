@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.haw_hamburg.sensorapp.recorder.settings.RecorderSettingsActivityFragment"
+    tools:context="de.haw_hamburg.sensorapp.recorder.settings.RecorderSettingsFragment"
     tools:showIn="@layout/activity_recorder_settings">
 
 
