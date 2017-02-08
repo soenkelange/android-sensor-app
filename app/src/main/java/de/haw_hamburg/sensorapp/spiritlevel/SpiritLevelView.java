@@ -34,6 +34,13 @@ public class SpiritLevelView extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rootView = inflater.inflate(R.layout.view_spirit_level, this, true);
         spiritLevelIndicator = (ImageView) rootView.findViewById(R.id.spiritLevelIndicator);
+        spiritLevelIndicator.post(new Runnable() {
+            @Override
+            public void run() {
+                indicatorHeight = spiritLevelIndicator.getMeasuredHeight();
+                indicatorWidth = spiritLevelIndicator.getMeasuredWidth();
+            }
+        });
         currentX = (int) spiritLevelIndicator.getX();
         currentY = (int) spiritLevelIndicator.getY();
     }
@@ -45,8 +52,6 @@ public class SpiritLevelView extends RelativeLayout {
     }
 
     private void updateLayoutParameters() {
-        indicatorHeight = spiritLevelIndicator.getHeight();
-        indicatorWidth = spiritLevelIndicator.getWidth();
         maxViewHeight = this.getHeight();
         maxViewWidth = this.getWidth();
         borderOffsetX = (int) ((maxViewWidth * BORDER_WIDTH_PERCENTAGE) / 2);
