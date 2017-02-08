@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".recorder.settings.RecorderSettingsActivity"
+            android:label="@string/recorder.settings.title"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
