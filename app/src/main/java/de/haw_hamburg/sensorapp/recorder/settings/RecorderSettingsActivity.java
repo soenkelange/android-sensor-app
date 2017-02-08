@@ -1,5 +1,7 @@
 package de.haw_hamburg.sensorapp.recorder.settings;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +12,11 @@ import android.view.View;
 import de.haw_hamburg.sensorapp.R;
 
 public class RecorderSettingsActivity extends AppCompatActivity {
+
+    public static void startActivity(Context context) {
+        Intent intent = new Intent(context, RecorderSettingsActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

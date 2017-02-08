@@ -13,4 +13,8 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
     @Inject
     public RecorderPresenter() {
     }
+
+    public void onSettingsClicked() {
+        getView().showRecorderSettings();
+    }
 }

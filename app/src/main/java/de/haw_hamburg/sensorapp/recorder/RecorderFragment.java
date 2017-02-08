@@ -3,11 +3,15 @@ package de.haw_hamburg.sensorapp.recorder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import de.haw_hamburg.sensorapp.R;
 import de.haw_hamburg.sensorapp.SensorApplication;
 import de.haw_hamburg.sensorapp.navigation.BaseNavigationFragment;
+import de.haw_hamburg.sensorapp.recorder.settings.RecorderSettingsActivity;
 
 /**
  * Use the {@link RecorderFragment#newInstance} factory method to
@@ -15,6 +19,7 @@ import de.haw_hamburg.sensorapp.navigation.BaseNavigationFragment;
  */
 public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, RecorderView> implements RecorderView {
 
+    private static final String TAG = RecorderFragment.class.getSimpleName();
     private RecyclerView sensorsRecyclerView;
     private RecorderComponent recorderComponent;
 
@@ -29,6 +34,7 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         SensorApplication sensorApplication = (SensorApplication) getActivity().getApplication();
         recorderComponent = DaggerRecorderComponent.builder()
                 .applicationComponent(sensorApplication.getApplicationComponent())
@@ -39,6 +45,23 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sensorsRecyclerView = (RecyclerView) view.findViewById(R.id.sensorsRecyclerView);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_recorder, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_recorder_settings:
+                getPresenter().onSettingsClicked();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -54,5 +77,10 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public String getTitle() {
         return getString(R.string.recorder_title);
+    }
+
+    @Override
+    public void showRecorderSettings() {
+        RecorderSettingsActivity.startActivity(getContext());
     }
 }

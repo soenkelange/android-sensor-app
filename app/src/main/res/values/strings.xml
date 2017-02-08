@@ -13,6 +13,7 @@
     <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
 
     <string name="recorder.title">Recorder</string>
+    <string name="recorder.menu.settings">Settings</string>
     <string name="recorder.helloWorld">Hello World!</string>
 
     <string name="recorder.settings.title">Recorder Settings</string>
