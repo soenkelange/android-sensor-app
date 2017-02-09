@@ -50,10 +50,8 @@ public class SpiritLevelFragment extends BaseNavigationFragment<SpiritLevelPrese
     @Override
     public void onPause() {
         super.onPause();
-        if (getActivity() != null) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-            spiritLevel.stop();
-        }
+        spiritLevel.stop();
+
     }
 
     @Override

@@ -98,7 +98,7 @@ public class CompassFragment extends BaseNavigationFragment<CompassPresenter, Co
     public void onResume() {
         super.onResume();
         if (getActivity() != null) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
             compass.start();
         }
     }
@@ -106,10 +106,8 @@ public class CompassFragment extends BaseNavigationFragment<CompassPresenter, Co
     @Override
     public void onPause() {
         super.onPause();
-        if (getActivity() != null) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-            compass.stop();
-        }
+        compass.stop();
+
     }
 
     @Override
