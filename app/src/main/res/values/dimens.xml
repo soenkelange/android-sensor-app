@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="padding.base">16dp</dimen>
+    <dimen name="padding.small">8dp</dimen>
 </resources>

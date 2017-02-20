@@ -2,9 +2,9 @@ package de.haw_hamburg.sensorapp.recorder.settings;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -18,6 +18,8 @@ import de.haw_hamburg.sensorapp.SensorApplication;
 public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPresenter, RecorderSettingsView> implements RecorderSettingsView {
 
     private RecorderSettingsComponent recorderSettingsComponent;
+    private RecyclerView sensorsRecyclerView;
+    private SensorsRecyclerViewAdapter sensorsRecyclerViewAdapter;
 
     public RecorderSettingsFragment() {
     }
@@ -32,9 +34,18 @@ public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPr
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        sensorsRecyclerView = (RecyclerView) view.findViewById(R.id.sensorsRecyclerView);
+        sensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        sensorsRecyclerViewAdapter = new SensorsRecyclerViewAdapter();
+        sensorsRecyclerViewAdapter.setListener(this::toggleSensor);
+        sensorsRecyclerView.setAdapter(sensorsRecyclerViewAdapter);
+        getPresenter().loadSensors();
+    }
+
+    private void toggleSensor(Sensor sensor, boolean isChecked) {
+        getPresenter().toggleSensor(sensor, isChecked);
     }
 
     @Override
@@ -49,6 +60,6 @@ public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPr
 
     @Override
     public void showSensorCategories(List<SensorCategory> sensorCategories) {
-
+        sensorsRecyclerViewAdapter.setSensorCategories(sensorCategories);
     }
 }
