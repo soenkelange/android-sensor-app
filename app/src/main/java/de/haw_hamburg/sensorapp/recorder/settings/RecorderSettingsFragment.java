@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import de.haw_hamburg.sensorapp.BaseMvpFragment;
 import de.haw_hamburg.sensorapp.R;
 import de.haw_hamburg.sensorapp.SensorApplication;
@@ -43,5 +45,10 @@ public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPr
     @Override
     public RecorderSettingsPresenter providePresenter() {
         return recorderSettingsComponent.presenter();
+    }
+
+    @Override
+    public void showSensorCategories(List<SensorCategory> sensorCategories) {
+
     }
 }

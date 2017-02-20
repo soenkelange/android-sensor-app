@@ -10,7 +10,17 @@ import dagger.Provides;
 public class RecorderSettingsModule {
 
     @Provides
-    public RecorderSettingsPresenter provideRecorderSettingsPresenter() {
-        return new RecorderSettingsPresenter();
+    public GetSensorCategoriesInteractor provideGetSensorCategoriesInteractor() {
+        return new GetSensorCategoriesInteractor();
+    }
+
+    @Provides
+    public ToggleSensorInteractor provideToggleSensorInteractor() {
+        return new ToggleSensorInteractor();
+    }
+
+    @Provides
+    public RecorderSettingsPresenter provideRecorderSettingsPresenter(GetSensorCategoriesInteractor interactor, ToggleSensorInteractor toggleSensorInteractor) {
+        return new RecorderSettingsPresenter(interactor, toggleSensorInteractor);
     }
 }
