@@ -21,7 +21,7 @@ public class GetSensorCategoriesInteractor {
     public Observable<List<SensorCategory>> execute() {
         return sensorManager.getSensorList(android.hardware.Sensor.TYPE_ALL)
                 .flatMapIterable(sensors -> sensors)
-                .map(sensor -> new Sensor(sensor.getName()))
+                .map(sensor -> new Sensor(sensor.getName(), sensor.getType()))
                 .toList()
                 .map(sensors -> singletonList(new SensorCategory("All", sensors)));
     }

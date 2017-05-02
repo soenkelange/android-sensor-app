@@ -26,4 +26,10 @@ public class SensorModule {
     public RxSensorManager providesRxSensorManager(SensorManager sensorManager) {
         return new RxSensorManager(sensorManager);
     }
+
+    @Provides
+    @Singleton
+    public SensorPreferences providesSensorPreferences(Context context) {
+        return new SensorPreferences(context);
+    }
 }

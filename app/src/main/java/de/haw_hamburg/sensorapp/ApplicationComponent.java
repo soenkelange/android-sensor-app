@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import de.haw_hamburg.rxandroidsensor.RxSensorManager;
 import de.haw_hamburg.sensorapp.sensor.SensorModule;
+import de.haw_hamburg.sensorapp.sensor.SensorPreferences;
 
 /**
  * Created by s.lange on 08.01.17.
@@ -21,4 +22,6 @@ public interface ApplicationComponent {
     SensorManager getSensorManager();
 
     RxSensorManager getRxSensorManager();
+
+    SensorPreferences getSensorPreferences();
 }

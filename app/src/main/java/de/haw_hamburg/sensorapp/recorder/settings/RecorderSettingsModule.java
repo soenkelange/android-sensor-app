@@ -3,6 +3,7 @@ package de.haw_hamburg.sensorapp.recorder.settings;
 import dagger.Module;
 import dagger.Provides;
 import de.haw_hamburg.rxandroidsensor.RxSensorManager;
+import de.haw_hamburg.sensorapp.sensor.SensorPreferences;
 
 /**
  * Created by s.lange on 08.02.17.
@@ -16,8 +17,8 @@ public class RecorderSettingsModule {
     }
 
     @Provides
-    public ToggleSensorInteractor provideToggleSensorInteractor() {
-        return new ToggleSensorInteractor();
+    public ToggleSensorInteractor provideToggleSensorInteractor(SensorPreferences sensorPreferences) {
+        return new ToggleSensorInteractor(sensorPreferences);
     }
 
     @Provides
