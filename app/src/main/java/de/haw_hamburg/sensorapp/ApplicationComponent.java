@@ -6,6 +6,7 @@ import android.hardware.SensorManager;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import de.haw_hamburg.rxandroidsensor.RxSensorManager;
 import de.haw_hamburg.sensorapp.sensor.SensorModule;
 
 /**
@@ -18,4 +19,6 @@ public interface ApplicationComponent {
     Context context();
 
     SensorManager getSensorManager();
+
+    RxSensorManager getRxSensorManager();
 }
