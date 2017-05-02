@@ -12,8 +12,8 @@ import de.haw_hamburg.sensorapp.sensor.SensorPreferences;
 public class RecorderSettingsModule {
 
     @Provides
-    public GetSensorCategoriesInteractor provideGetSensorCategoriesInteractor(RxSensorManager rxSensorManager) {
-        return new GetSensorCategoriesInteractor(rxSensorManager);
+    public GetSensorCategoriesInteractor provideGetSensorCategoriesInteractor(RxSensorManager rxSensorManager, SensorPreferences sensorPreferences) {
+        return new GetSensorCategoriesInteractor(rxSensorManager, sensorPreferences);
     }
 
     @Provides

@@ -45,6 +45,7 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
     public void onBindItemViewHolder(ItemViewHolder holder, int section, int item) {
         Sensor sensor = sensorCategories.get(section).getSensor(item);
         holder.setText(sensor.getName());
+        holder.setChecked(sensor.isEnabled());
         holder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -108,6 +109,10 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
 
         private void setText(String text) {
             this.textSwitchView.setText(text);
+        }
+
+        private void setChecked(boolean enabled) {
+            textSwitchView.setChecked(enabled);
         }
 
         private void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {

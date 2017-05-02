@@ -20,4 +20,8 @@ public class SensorPreferences {
         editor.putBoolean(String.valueOf(sensor.getType()), enabled);
         editor.apply();
     }
+
+    public boolean isEnabled(Sensor sensor) {
+        return sharedPreferences.getBoolean(String.valueOf(sensor.getType()), false);
+    }
 }
