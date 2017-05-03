@@ -43,7 +43,7 @@ public class RecorderSettingsPresenterTest {
 
     @Test
     public void shouldToggleSensor() {
-        Sensor sensor = new Sensor();
+        Sensor sensor = new Sensor("Accelerometer", android.hardware.Sensor.TYPE_ACCELEROMETER);
         boolean enabled = true;
         recorderSettingsPresenter.toggleSensor(sensor, enabled);
 
