@@ -10,7 +10,6 @@
     <string name="compass.ratioButtons.softwareSensor">Software Sensor</string>
 
     <string name="spiritLevel.title">Spirit Level</string>
-    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
 
     <string name="recorder.title">Recorder</string>
     <string name="recorder.menu.settings">Settings</string>
