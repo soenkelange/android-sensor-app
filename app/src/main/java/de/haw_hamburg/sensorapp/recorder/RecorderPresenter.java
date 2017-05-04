@@ -4,6 +4,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -131,7 +132,7 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
         try {
             fileWriter = new FileWriter(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Could not open FileWriter", e);
         }
         CSVWriter csvWriter = new CSVWriter(fileWriter);
         SensorEventsCSVRecorder sensorEventsCSVRecorder = new SensorEventsCSVRecorder(csvWriter);
@@ -179,7 +180,7 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
         try {
             fileWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Could not flush FileWriter", e);
         }
         getView().exportCSV(Uri.fromFile(file));
         file = null;
