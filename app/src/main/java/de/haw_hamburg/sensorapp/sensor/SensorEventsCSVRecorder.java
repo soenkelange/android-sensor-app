@@ -60,7 +60,7 @@ public class SensorEventsCSVRecorder {
             SensorEvent sensorEvent = cachedSensorEvents.get(writer.getType());
             List<String> sensorEventValues;
             if (sensorEvent != null) {
-                sensorEventValues = getSensorEventValues(sensorEvent);
+                sensorEventValues = getSensorEventValues(sensorEvent, writer.getHeaders().size());
             } else {
                 sensorEventValues = getPlaceHolderValues(writer.getHeaders().size());
             }
@@ -77,9 +77,10 @@ public class SensorEventsCSVRecorder {
         return values;
     }
 
-    private List<String> getSensorEventValues(SensorEvent sensorEvent) {
+    private List<String> getSensorEventValues(SensorEvent sensorEvent, int numberOfHeaders) {
         List<String> values = new ArrayList<>();
-        for (int i = 0; i < sensorEvent.values.length; i++) {
+
+        for (int i = 0; i < Math.min(sensorEvent.values.length, numberOfHeaders); i++) {
             values.add(String.valueOf(sensorEvent.values[i]));
         }
         return values;
