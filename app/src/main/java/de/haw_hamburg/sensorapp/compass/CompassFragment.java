@@ -1,5 +1,6 @@
 package de.haw_hamburg.sensorapp.compass;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -96,13 +97,17 @@ public class CompassFragment extends BaseNavigationFragment<CompassPresenter, Co
     @Override
     public void onResume() {
         super.onResume();
-        compass.start();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+            compass.start();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         compass.stop();
+
     }
 
     @Override

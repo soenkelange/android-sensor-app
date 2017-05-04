@@ -1,5 +1,6 @@
 package de.haw_hamburg.sensorapp.navigation;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -56,17 +57,23 @@ public class BottomNavigationActivity extends BaseMvpActivity<BottomNavigationPr
 
     @Override
     public void showCompass() {
+        resetRequestedOrientation();
         showFragment(new CompassFragment());
     }
 
     @Override
     public void showSpiritLevel() {
+        resetRequestedOrientation();
         showFragment(new SpiritLevelFragment());
     }
 
     @Override
     public void showRecorder() {
         showFragment(new RecorderFragment());
+    }
+
+    private void resetRequestedOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     private void showFragment(BaseNavigationFragment fragment) {
