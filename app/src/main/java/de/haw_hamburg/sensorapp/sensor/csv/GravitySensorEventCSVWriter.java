@@ -1,5 +1,7 @@
 package de.haw_hamburg.sensorapp.sensor.csv;
 
+import android.hardware.Sensor;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,5 +18,10 @@ public class GravitySensorEventCSVWriter implements SensorEventCSVWriter {
                 "Force of gravity along the x axis",
                 "Force of gravity along the y axis",
                 "Force of gravity along the z axis");
+    }
+
+    @Override
+    public Integer getType() {
+        return Sensor.TYPE_GRAVITY;
     }
 }

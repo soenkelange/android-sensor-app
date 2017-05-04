@@ -1,5 +1,7 @@
 package de.haw_hamburg.sensorapp.sensor.csv;
 
+import android.hardware.Sensor;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,5 +18,10 @@ public class GyroscopeSensorEventCSVWriter implements SensorEventCSVWriter {
                 "Rate of rotation around the x axis",
                 "Rate of rotation around the y axis",
                 "Rate of rotation around the z axis");
+    }
+
+    @Override
+    public Integer getType() {
+        return Sensor.TYPE_GYROSCOPE;
     }
 }

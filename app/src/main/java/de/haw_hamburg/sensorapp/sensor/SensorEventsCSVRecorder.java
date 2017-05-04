@@ -18,6 +18,7 @@ import de.haw_hamburg.sensorapp.csv.CSVWriter;
 public class SensorEventsCSVRecorder {
 
     private static final String TAG = SensorEventsCSVRecorder.class.getSimpleName();
+    private static final String EMPTY_STRING = "";
 
     private final CSVWriter csvWriter;
     private final List<SensorEventCSVWriter> sensorEventCSVWriters;
@@ -50,39 +51,55 @@ public class SensorEventsCSVRecorder {
             headers.addAll(sensorEventCSVWriter.getHeaders());
         }
         writeLine(headers);
+        headerWritten = true;
     }
 
     private void writeCachedValues() {
-//        List<String> values = new ArrayList<>();
-//
-//        for (SensorEventCSVWriter sensorEventCSVWriter : sensorEventCSVWriters) {
-//            SensorEvent cachedSensorEvent = cachedSensorEvents.get(sensorEventCSVWriter.getSensorType());
-//            int numberOfValues = sensorEventCSVWriter.getHeaders().size();
-//            for (int i = 0; i < numberOfValues; i++) {
-//
-//            }
-//        }
-//
-//        writeLine(values);
+        List<String> values = new ArrayList<>();
+        for (SensorEventCSVWriter writer : sensorEventCSVWriters) {
+            SensorEvent sensorEvent = cachedSensorEvents.get(writer.getType());
+            List<String> sensorEventValues;
+            if (sensorEvent != null) {
+                sensorEventValues = getSensorEventValues(sensorEvent);
+            } else {
+                sensorEventValues = getPlaceHolderValues(writer.getHeaders().size());
+            }
+            values.addAll(sensorEventValues);
+        }
+        writeLine(values);
+    }
 
-//        List<String> values = new ArrayList<>();
-//        for (SensorEventCSVWriter sensorEventCSVWriter : sensorEventCSVWriters) {
-//            SensorEvent cachedSensorEvent = cachedSensorEvents.get(sensorEventCSVWriter.getSensorType());
-//            if (cachedSensorEvent != null) {
-//
-//            }
-//            List<String> sensorEventValues = sensorEventCSVWriter.getValues(cachedSensorEvent);
-//            values.addAll(sensorEventValues);
-//        }
-//        writeLine(values);
+    private List<String> getPlaceHolderValues(int size) {
+        List<String> values = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            values.add(EMPTY_STRING);
+        }
+        return values;
+    }
+
+    private List<String> getSensorEventValues(SensorEvent sensorEvent) {
+        List<String> values = new ArrayList<>();
+        for (int i = 0; i < sensorEvent.values.length; i++) {
+            values.add(String.valueOf(sensorEvent.values[i]));
+        }
+        return values;
     }
 
     private void writeLine(List<String> fields) {
         try {
+            Log.d(TAG, "Write line: " + fieldsToString(fields));
             csvWriter.writeNextLine(fields);
         } catch (IOException e) {
             Log.e(TAG, "Could not write to CSV file", e);
         }
+    }
+
+    private String fieldsToString(List<String> fields) {
+        StringBuilder builder = new StringBuilder();
+        for (String field : fields) {
+            builder.append(field);
+        }
+        return builder.toString();
     }
 
     public void addSensorEventCSVWriter(SensorEventCSVWriter sensorEventsCSVWriter) {

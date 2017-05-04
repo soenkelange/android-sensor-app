@@ -1,5 +1,7 @@
 package de.haw_hamburg.sensorapp.sensor.csv;
 
+import android.hardware.Sensor;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,5 +18,10 @@ public class AccelerometerSensorEventCSVWriter implements SensorEventCSVWriter {
                 "Acceleration force along the x axis (including gravity)",
                 "Acceleration force along the y axis (including gravity)",
                 "Acceleration force along the z axis (including gravity)");
+    }
+
+    @Override
+    public Integer getType() {
+        return Sensor.TYPE_ACCELEROMETER;
     }
 }

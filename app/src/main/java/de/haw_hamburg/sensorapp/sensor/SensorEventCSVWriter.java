@@ -8,4 +8,6 @@ import java.util.List;
 public interface SensorEventCSVWriter {
 
     List<String> getHeaders();
+
+    Integer getType();
 }
