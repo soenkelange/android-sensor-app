@@ -47,6 +47,7 @@ public class SensorEventsCSVRecorder {
 
     private void writeHeaders() {
         List<String> headers = new ArrayList<>();
+        headers.add("Timestamp");
         for (SensorEventCSVWriter sensorEventCSVWriter : sensorEventCSVWriters) {
             headers.addAll(sensorEventCSVWriter.getHeaders());
         }
@@ -56,6 +57,7 @@ public class SensorEventsCSVRecorder {
 
     private void writeCachedValues() {
         List<String> values = new ArrayList<>();
+        values.add(String.valueOf(new Date().getTime()));
         for (SensorEventCSVWriter writer : sensorEventCSVWriters) {
             SensorEvent sensorEvent = cachedSensorEvents.get(writer.getType());
             List<String> sensorEventValues;
