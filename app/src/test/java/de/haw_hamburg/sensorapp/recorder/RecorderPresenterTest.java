@@ -3,6 +3,8 @@ package de.haw_hamburg.sensorapp.recorder;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.haw_hamburg.rxandroidsensor.RxSensorManager;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -17,8 +19,9 @@ public class RecorderPresenterTest {
     @Before
     public void setUp() throws Exception {
         GetEnabledSensorInteractor getEnabledSensorsInteractor = mock(GetEnabledSensorInteractor.class);
+        RxSensorManager rxSensorManager = mock(RxSensorManager.class);
         view = mock(RecorderView.class);
-        recorderPresenter = new RecorderPresenter(getEnabledSensorsInteractor);
+        recorderPresenter = new RecorderPresenter(getEnabledSensorsInteractor, rxSensorManager);
         recorderPresenter.attachView(view);
     }
 
