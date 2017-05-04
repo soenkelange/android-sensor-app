@@ -16,8 +16,9 @@ public class RecorderPresenterTest {
 
     @Before
     public void setUp() throws Exception {
+        GetEnabledSensorInteractor getEnabledSensorsInteractor = mock(GetEnabledSensorInteractor.class);
         view = mock(RecorderView.class);
-        recorderPresenter = new RecorderPresenter();
+        recorderPresenter = new RecorderPresenter(getEnabledSensorsInteractor);
         recorderPresenter.attachView(view);
     }
 

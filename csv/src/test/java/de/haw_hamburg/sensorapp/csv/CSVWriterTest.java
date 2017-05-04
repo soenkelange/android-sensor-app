@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
@@ -37,10 +39,10 @@ public class CSVWriterTest {
 
     @Test
     public void writeNextLine_ShouldWriteNextLineToWriter() throws Exception {
-        String[] fields = new String[]{"hello","world"};
+        List<String> fields = Arrays.asList("hello","world");
         csvWriter.writeNextLine(fields);
 
-        String expectedLine = fields[0] + csvWriter.getSeparator() + fields[1] + csvWriter.getLineEnd();
+        String expectedLine = fields.get(0) + csvWriter.getSeparator() + fields.get(1) + csvWriter.getLineEnd();
         verify(writer).write(eq(expectedLine));
     }
 }

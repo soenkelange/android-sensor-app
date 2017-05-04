@@ -13,7 +13,12 @@
 
     <string name="recorder.title">Recorder</string>
     <string name="recorder.menu.settings">Settings</string>
-    <string name="recorder.helloWorld">Hello World!</string>
+    <string name="recorder.control.start">Start</string>
+    <string name="recorder.control.stop">Stop</string>
+    <string name="recorder.stopRecordingDialog.title">Stop Recording</string>
+    <string name="recorder.stopRecordingDialog.message">Should the recording be stopped?</string>
+    <string name="recorder.stopRecordingDialog.cancel">Cancel</string>
+    <string name="recorder.stopRecordingDialog.stop">Stop</string>
 
     <string name="recorder.settings.title">Recorder Settings</string>
 

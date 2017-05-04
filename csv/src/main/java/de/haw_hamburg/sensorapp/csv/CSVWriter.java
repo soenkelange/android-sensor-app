@@ -2,6 +2,7 @@ package de.haw_hamburg.sensorapp.csv;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 public class CSVWriter {
 
@@ -16,13 +17,15 @@ public class CSVWriter {
         this.writer = writer;
     }
 
-    public void writeNextLine(String[] fields) throws IOException {
+    public void writeNextLine(List<String> fields) throws IOException {
         StringBuilder stringAppendable = new StringBuilder();
-        for (int i = 0; i < fields.length; i++) {
-            if (i != 0) {
+        boolean isFirst = true;
+        for (String field : fields) {
+            if (!isFirst) {
                 stringAppendable.append(separator);
+            } else {
+                isFirst = false;
             }
-            String field = fields[i];
             stringAppendable.append(field);
         }
         stringAppendable.append(lineEnd);
