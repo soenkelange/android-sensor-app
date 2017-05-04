@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +22,22 @@ import de.haw_hamburg.sensorapp.recorder.settings.Sensor;
 import de.haw_hamburg.sensorapp.sensor.SensorEventCSVWriter;
 import de.haw_hamburg.sensorapp.sensor.SensorEventsCSVRecorder;
 import de.haw_hamburg.sensorapp.sensor.csv.AccelerometerSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.AmbientTemperatureSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.GameRotationVectorSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.GeomagneticRotationVectorSensorEventCSVWriter;
 import de.haw_hamburg.sensorapp.sensor.csv.GravitySensorEventCSVWriter;
 import de.haw_hamburg.sensorapp.sensor.csv.GyroscopeSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.GyroscopeUncalibratedSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.LightSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.LinearAccelerationSensorEventCSVWriter;
 import de.haw_hamburg.sensorapp.sensor.csv.MagneticFieldSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.MagneticFieldUncalibratedSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.OrientationSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.PresureSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.ProximitySensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.RelativeHumiditySensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.RotationVectorSensorEventCSVWriter;
+import de.haw_hamburg.sensorapp.sensor.csv.TemperatureSensorEventCSVWriter;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Func1;
@@ -36,6 +49,8 @@ import rx.functions.Func1;
 public class RecorderPresenter extends AbstractPresenter<RecorderView> {
 
     private static final String TAG = RecorderPresenter.class.getSimpleName();
+    private static final List<SensorEventCSVWriter> SENSOR_EVENTS_CSV_WRITER = new ArrayList<>();
+
     private final GetEnabledSensorInteractor enabledSensorInteractor;
     private final RxSensorManager rxSensorManager;
 
@@ -43,6 +58,26 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
     private boolean isRecording = false;
     private File file;
     private FileWriter fileWriter;
+
+    static {
+        SENSOR_EVENTS_CSV_WRITER.add(new AccelerometerSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new AmbientTemperatureSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new GameRotationVectorSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new GeomagneticRotationVectorSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new GravitySensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new GyroscopeSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new GyroscopeUncalibratedSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new LightSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new LinearAccelerationSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new MagneticFieldSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new MagneticFieldUncalibratedSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new OrientationSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new PresureSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new ProximitySensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new RelativeHumiditySensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new RotationVectorSensorEventCSVWriter());
+        SENSOR_EVENTS_CSV_WRITER.add(new TemperatureSensorEventCSVWriter());
+    }
 
     @Inject
     public RecorderPresenter(GetEnabledSensorInteractor getEnabledSensorInteractor, RxSensorManager rxSensorManager) {
@@ -108,7 +143,7 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
                     }
                 })
                 .map(sensor -> {
-                    SensorEventCSVWriter sensorEventsCSVWriter = createSensorEventsCSVWriter(sensor);
+                    SensorEventCSVWriter sensorEventsCSVWriter = getSensorEventsCSVWriter(sensor);
                     if (sensorEventsCSVWriter != null) {
                         sensorEventsCSVRecorder.addSensorEventCSVWriter(sensorEventsCSVWriter);
                     }
@@ -130,16 +165,11 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
                 .subscribe(sensorEventsCSVRecorder::write);
     }
 
-    private SensorEventCSVWriter createSensorEventsCSVWriter(Sensor sensor) {
-        switch (sensor.getType()) {
-            case android.hardware.Sensor.TYPE_ACCELEROMETER:
-                return new AccelerometerSensorEventCSVWriter();
-            case android.hardware.Sensor.TYPE_GRAVITY:
-                return new GravitySensorEventCSVWriter();
-            case android.hardware.Sensor.TYPE_GYROSCOPE:
-                return new GyroscopeSensorEventCSVWriter();
-            case android.hardware.Sensor.TYPE_MAGNETIC_FIELD:
-                return new MagneticFieldSensorEventCSVWriter();
+    private SensorEventCSVWriter getSensorEventsCSVWriter(Sensor sensor) {
+        for (SensorEventCSVWriter sensorEventWriter : SENSOR_EVENTS_CSV_WRITER) {
+            if (sensor.getType() == sensorEventWriter.getType()) {
+                return sensorEventWriter;
+            }
         }
         return null;
     }
