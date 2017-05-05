@@ -1,16 +1,14 @@
 package de.haw_hamburg.sensorapp.recorder;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.github.mikephil.charting.charts.LineChart;
 
 import de.haw_hamburg.sensorapp.R;
 import de.haw_hamburg.sensorapp.SensorApplication;
@@ -25,6 +23,7 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
 
     private static final String TAG = RecorderFragment.class.getSimpleName();
     private Button controlButton;
+    private LineChart lineChart;
     private RecorderComponent recorderComponent;
 
     public RecorderFragment() {
@@ -49,12 +48,12 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         controlButton = (Button) view.findViewById(R.id.controlButton);
+        lineChart = (LineChart) view.findViewById(R.id.lineChart);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getPresenter().initializeView();
     }
 
     @Override
@@ -90,84 +89,7 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     }
 
     @Override
-    public void showStartButton() {
-        showControlButton(R.string.recorder_control_start, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStartClicked();
-            }
-        });
-    }
-
-    private void onStartClicked() {
-        getPresenter().onStartClicked();
-    }
-
-    @Override
-    public void hideStartButton() {
-        hideControlButton();
-    }
-
-    @Override
-    public void showStopButton() {
-        showControlButton(R.string.recorder_control_stop, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStopClicked();
-            }
-        });
-    }
-
-    private void onStopClicked() {
-        getPresenter().onStopClicked();
-    }
-
-    @Override
-    public void hideStopButton() {
-        hideControlButton();
-    }
-
-    private void showControlButton(int stringRes, View.OnClickListener listener) {
-        controlButton.setText(stringRes);
-        controlButton.setVisibility(View.VISIBLE);
-        controlButton.setOnClickListener(listener);
-    }
-
-    private void hideControlButton() {
-        controlButton.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void showStopRecordingDialog() {
-        new AlertDialog.Builder(getContext())
-                .setTitle(getString(R.string.recorder_stopRecordingDialog_title))
-                .setMessage(getString(R.string.recorder_stopRecordingDialog_message))
-                .setPositiveButton(getString(R.string.recorder_stopRecordingDialog_stop), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onStopClicked();
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(getString(R.string.recorder_stopRecordingDialog_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    @Override
     public void showRecorderSettings() {
         RecorderSettingsActivity.startActivity(getContext());
-    }
-
-    @Override
-    public void exportCSV(Uri uri) {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.putExtra(Intent.EXTRA_STREAM, uri);
-        i.setType("text/*");
-        startActivity(Intent.createChooser(i, "Email/Upload"));
     }
 }
