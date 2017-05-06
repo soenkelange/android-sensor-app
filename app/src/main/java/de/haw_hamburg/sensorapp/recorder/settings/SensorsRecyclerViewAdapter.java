@@ -20,6 +20,11 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
 
     private OnSensorCheckedChangeListener listener;
     private List<SensorCategory> sensorCategories;
+    private boolean isScrolling;
+
+    public SensorsRecyclerViewAdapter() {
+        isScrolling = false;
+    }
 
     @Override
     public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
@@ -49,8 +54,9 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
         holder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (listener != null) {
+                if (listener != null && isScrolling == false) {
                     listener.onSensorCheckedChanged(sensor, isChecked);
+                    sensorCategories.get(section).getSensor(item).setEnabled(isChecked);
                 }
             }
         });
@@ -80,6 +86,14 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
 
     public void setSensorCategories(List<SensorCategory> sensorCategories) {
         this.sensorCategories = sensorCategories;
+    }
+
+    public boolean getIsScrolling() {
+        return isScrolling;
+    }
+
+    public void setIsScrolling(boolean scrolling) {
+        isScrolling = scrolling;
     }
 
     public interface OnSensorCheckedChangeListener {

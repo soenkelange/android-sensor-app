@@ -41,6 +41,23 @@ public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPr
         sensorsRecyclerViewAdapter = new SensorsRecyclerViewAdapter();
         sensorsRecyclerViewAdapter.setListener(this::toggleSensor);
         sensorsRecyclerView.setAdapter(sensorsRecyclerViewAdapter);
+        sensorsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING){
+                    sensorsRecyclerViewAdapter.setIsScrolling(true);
+                }
+                else{
+                    sensorsRecyclerViewAdapter.setIsScrolling(false);
+                }
+            }
+        });
         getPresenter().loadSensors();
     }
 
