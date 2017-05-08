@@ -6,5 +6,4 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:listPreferredItemHeightSmall"
-    tools:text="Subheader"
-    android:checked="false" />
+    tools:text="Subheader" />

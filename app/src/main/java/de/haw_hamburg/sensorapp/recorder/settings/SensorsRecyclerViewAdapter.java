@@ -39,6 +39,18 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
     public void onBindHeaderViewHolder(HeaderViewHolder holder, int section) {
         SensorCategory sensorCategory = sensorCategories.get(section);
         holder.setText(sensorCategory.getName());
+        boolean allChecked = true;
+        for (int x = 0; x < sensorCategory.getSensorsCount(); x++) {
+            if (sensorCategory.getSensor(x).isEnabled() == false) {
+                allChecked = false;
+            }
+        }
+        if (allChecked) {
+            holder.setChecked(true);
+        }
+        else {
+            holder.setChecked(false);
+        }
         holder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
