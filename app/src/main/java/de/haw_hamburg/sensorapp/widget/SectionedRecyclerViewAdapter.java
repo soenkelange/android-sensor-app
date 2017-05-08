@@ -112,6 +112,7 @@ public abstract class SectionedRecyclerViewAdapter<HVH extends RecyclerView.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);
+            this.setIsRecyclable(false);
         }
     }
 }

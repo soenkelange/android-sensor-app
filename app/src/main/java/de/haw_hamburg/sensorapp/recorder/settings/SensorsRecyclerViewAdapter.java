@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,12 +18,8 @@ import de.haw_hamburg.sensorapp.widget.SectionedRecyclerViewAdapter;
 class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRecyclerViewAdapter.HeaderViewHolder, SensorsRecyclerViewAdapter.ItemViewHolder> {
 
     private OnSensorCheckedChangeListener listener;
+    private  OnHeaderCheckedChangeListener onHeaderCheckedChangeListener;
     private List<SensorCategory> sensorCategories;
-    private boolean isScrolling;
-
-    public SensorsRecyclerViewAdapter() {
-        isScrolling = false;
-    }
 
     @Override
     public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
@@ -44,17 +39,29 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
     public void onBindHeaderViewHolder(HeaderViewHolder holder, int section) {
         SensorCategory sensorCategory = sensorCategories.get(section);
         holder.setText(sensorCategory.getName());
+        holder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (onHeaderCheckedChangeListener != null) {
+                    onHeaderCheckedChangeListener.onHeaderCheckedChanged(section, isChecked);
+                    for (int i = 0; i < sensorCategories.get(section).getSensorsCount(); i++) {
+                        sensorCategories.get(section).getSensor(i).setEnabled(isChecked);
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void onBindItemViewHolder(ItemViewHolder holder, int section, int item) {
         Sensor sensor = sensorCategories.get(section).getSensor(item);
         holder.setText(sensor.getName());
+        holder.setSection(section);
         holder.setChecked(sensor.isEnabled());
         holder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (listener != null && isScrolling == false) {
+                if (listener != null) {
                     listener.onSensorCheckedChanged(sensor, isChecked);
                     sensorCategories.get(section).getSensor(item).setEnabled(isChecked);
                 }
@@ -80,6 +87,10 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
         this.listener = listener;
     }
 
+    public void setOnHeaderCheckedChangeListener(OnHeaderCheckedChangeListener listener) {
+        this.onHeaderCheckedChangeListener = listener;
+    }
+
     public List<SensorCategory> getSensorCategories() {
         return sensorCategories;
     }
@@ -88,33 +99,39 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
         this.sensorCategories = sensorCategories;
     }
 
-    public boolean getIsScrolling() {
-        return isScrolling;
-    }
-
-    public void setIsScrolling(boolean scrolling) {
-        isScrolling = scrolling;
-    }
 
     public interface OnSensorCheckedChangeListener {
         void onSensorCheckedChanged(Sensor sensor, boolean isChecked);
     }
 
+    public interface OnHeaderCheckedChangeListener {
+        void onHeaderCheckedChanged(int section, boolean isChecked);
+    }
+
     class HeaderViewHolder extends RecyclerView.ViewHolder {
-        private final TextView subheaderTextView;
+        private final Switch subheaderSwitch;
 
         private HeaderViewHolder(View view) {
             super(view);
-            subheaderTextView = (TextView) itemView.findViewById(R.id.subheader);
+            subheaderSwitch = (Switch) itemView.findViewById(R.id.subheader);
         }
 
         private void setText(String text) {
-            this.subheaderTextView.setText(text);
+            this.subheaderSwitch.setText(text);
+        }
+
+        private void setChecked(boolean enabled) {
+            subheaderSwitch.setChecked(enabled);
+        }
+
+        private void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+            subheaderSwitch.setOnCheckedChangeListener(listener);
         }
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private final Switch textSwitchView;
+        private int section;
 
         private ItemViewHolder(View view) {
             super(view);
@@ -125,8 +142,16 @@ class SensorsRecyclerViewAdapter extends SectionedRecyclerViewAdapter<SensorsRec
             this.textSwitchView.setText(text);
         }
 
-        private void setChecked(boolean enabled) {
+        public void setChecked(boolean enabled) {
             textSwitchView.setChecked(enabled);
+        }
+
+        public int getSection() {
+            return section;
+        }
+
+        private void setSection(int section) {
+            this.section = section;
         }
 
         private void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {

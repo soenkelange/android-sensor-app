@@ -15,7 +15,7 @@ import de.haw_hamburg.sensorapp.SensorApplication;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPresenter, RecorderSettingsView> implements RecorderSettingsView {
+public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPresenter, RecorderSettingsView> implements RecorderSettingsView, SensorsRecyclerViewAdapter.OnHeaderCheckedChangeListener {
 
     private RecorderSettingsComponent recorderSettingsComponent;
     private RecyclerView sensorsRecyclerView;
@@ -40,24 +40,10 @@ public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPr
         sensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         sensorsRecyclerViewAdapter = new SensorsRecyclerViewAdapter();
         sensorsRecyclerViewAdapter.setListener(this::toggleSensor);
+        sensorsRecyclerViewAdapter.setOnHeaderCheckedChangeListener(this::onHeaderCheckedChanged);
         sensorsRecyclerView.setAdapter(sensorsRecyclerViewAdapter);
-        sensorsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
+        sensorsRecyclerView.setNestedScrollingEnabled(false);
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING){
-                    sensorsRecyclerViewAdapter.setIsScrolling(true);
-                }
-                else{
-                    sensorsRecyclerViewAdapter.setIsScrolling(false);
-                }
-            }
-        });
         getPresenter().loadSensors();
     }
 
@@ -78,5 +64,20 @@ public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPr
     @Override
     public void showSensorCategories(List<SensorCategory> sensorCategories) {
         sensorsRecyclerViewAdapter.setSensorCategories(sensorCategories);
+    }
+
+    @Override
+    public void onHeaderCheckedChanged(int section, boolean isChecked) {
+        for (int i = 0; i < sensorsRecyclerView.getAdapter().getItemCount(); i++) {
+            try {
+                SensorsRecyclerViewAdapter.ItemViewHolder itemViewHolder = (SensorsRecyclerViewAdapter.ItemViewHolder) sensorsRecyclerView.findViewHolderForAdapterPosition(i);
+                if (itemViewHolder.getSection() == section) {
+                    itemViewHolder.setChecked(isChecked);
+                }
+            }
+            catch (Exception e) {
+
+            }
+        }
     }
 }
