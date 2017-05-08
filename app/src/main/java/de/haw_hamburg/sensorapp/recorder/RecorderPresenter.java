@@ -2,7 +2,6 @@ package de.haw_hamburg.sensorapp.recorder;
 
 import javax.inject.Inject;
 
-import de.haw_hamburg.rxandroidsensor.RxSensorManager;
 import de.haw_hamburg.sensorapp.mvp.AbstractPresenter;
 
 /**
@@ -12,16 +11,28 @@ import de.haw_hamburg.sensorapp.mvp.AbstractPresenter;
 public class RecorderPresenter extends AbstractPresenter<RecorderView> {
 
     private final GetEnabledSensorInteractor enabledSensorInteractor;
-    private final RxSensorManager rxSensorManager;
 
     @Inject
-    public RecorderPresenter(GetEnabledSensorInteractor getEnabledSensorInteractor, RxSensorManager rxSensorManager) {
+    public RecorderPresenter(GetEnabledSensorInteractor getEnabledSensorInteractor) {
         this.enabledSensorInteractor = getEnabledSensorInteractor;
-        this.rxSensorManager = rxSensorManager;
     }
 
 
-    public void onSettingsClicked() {
+    public void initialize() {
+        getView().showNoSensorsEnabledHint();
+        enabledSensorInteractor.execute()
+                .flatMapIterable(sensors -> sensors)
+                .subscribe(sensor -> {
+                    getView().addSensorLineChart(sensor);
+                    getView().showRecorderControls();
+                });
+    }
+
+    public void onSettingsMenuItemClicked() {
+        getView().showRecorderSettings();
+    }
+
+    public void onOpenSettingsButtonClicked() {
         getView().showRecorderSettings();
     }
 }

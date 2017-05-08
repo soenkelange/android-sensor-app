@@ -19,6 +19,8 @@
     <string name="recorder.stopRecordingDialog.message">Should the recording be stopped?</string>
     <string name="recorder.stopRecordingDialog.cancel">Cancel</string>
     <string name="recorder.stopRecordingDialog.stop">Stop</string>
+    <string name="recorder.noSensorsEnabled.hint">No sensors enabled. Go to settings to enabled sensors.</string>
+    <string name="recorder.noSensorsEnabled.openSettings">Open Settings</string>
 
     <string name="recorder.settings.title">Recorder Settings</string>
 
