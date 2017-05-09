@@ -1,5 +1,7 @@
 package de.haw_hamburg.sensorapp.recorder;
 
+import android.util.Log;
+
 import javax.inject.Inject;
 
 import de.haw_hamburg.sensorapp.mvp.AbstractPresenter;
@@ -30,6 +32,10 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
 
     public void onSettingsMenuItemClicked() {
         getView().showRecorderSettings();
+    }
+
+    public void onControlButtonClicked() {
+        Log.d(RecorderPresenter.class.getSimpleName(), "onControlButtonClicked");
     }
 
     public void onOpenSettingsButtonClicked() {

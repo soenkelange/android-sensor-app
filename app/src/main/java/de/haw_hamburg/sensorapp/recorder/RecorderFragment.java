@@ -1,16 +1,12 @@
 package de.haw_hamburg.sensorapp.recorder;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -68,6 +64,14 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
         openSettingsButton = (Button) view.findViewById(R.id.openSettingsButton);
         openSettingsButton.setOnClickListener(this::onOpenSettingsClicked);
         getPresenter().initialize();
+    }
+
+    private void onControlButtonClicked(View view) {
+        getPresenter().onControlButtonClicked();
+    }
+
+    private void onOpenSettingsClicked(View view) {
+        getPresenter().onOpenSettingsButtonClicked();
     }
 
     @Override
