@@ -7,6 +7,10 @@ buildscript {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -46,6 +50,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'io.reactivex:rxjava:1.2.5'
     compile 'io.reactivex:rxandroid:0.23.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
