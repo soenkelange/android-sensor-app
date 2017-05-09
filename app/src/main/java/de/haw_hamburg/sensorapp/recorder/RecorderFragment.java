@@ -1,5 +1,6 @@
 package de.haw_hamburg.sensorapp.recorder;
 
+import android.hardware.SensorEvent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -130,5 +131,10 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public void addSensorLineChart(Sensor sensor) {
         lineChartPagerAdapter.addSensorLineChart(sensor);
+    }
+
+    @Override
+    public void addSensorEvent(SensorEvent sensorEvent) {
+        lineChartPagerAdapter.addSensorEvent(sensorEvent);
     }
 }
