@@ -69,42 +69,46 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
         LineChart lineChart = new LineChart(context);
         lineChart.setData(new LineData());
         lineChart.getDescription().setEnabled(false);
-        sensorLineCharts.add(new SensorLineChart(sensor, lineChart));
+        SensorLineChart sensorLineChart = new SensorLineChart(sensor,lineChart);
+        sensorLineCharts.add(sensorLineChart);
         notifyDataSetChanged();
     }
 
     public void addSensorEvent(SensorEvent sensorEvent) {
         SensorLineChart sensorLineChart = getSensorLiveChart(sensorEvent);
-        LineChart lineChart = sensorLineChart.getLineChart();
-        LineData lineData = lineChart.getLineData();
-        for (int i = 0; i < sensorEvent.values.length; i++) {
-            ILineDataSet sensorEventValueDataSet = lineData.getDataSetByIndex(i);
-            if (sensorEventValueDataSet == null) {
-                sensorEventValueDataSet = createDataSet(i);
-                lineData.addDataSet(sensorEventValueDataSet);
+        if (sensorLineChart.isVisible() && sensorLineChart.getAcceptsRequest()) {
+            LineChart lineChart = sensorLineChart.getLineChart();
+            LineData lineData = lineChart.getLineData();
+            for (int i = 0; i < sensorEvent.values.length; i++) {
+                ILineDataSet sensorEventValueDataSet = lineData.getDataSetByIndex(i);
+                if (sensorEventValueDataSet == null) {
+                    sensorEventValueDataSet = createDataSet(i);
+                    lineData.addDataSet(sensorEventValueDataSet);
+                }
+                if (lineData.getDataSetByIndex(i).getXMax() < 0) {
+                    lineData.addEntry(new Entry(0, sensorEvent.values[i]), i);
+                }
+                else {
+                    lineData.addEntry(new Entry(lineData.getDataSetByIndex(i).getXMax()+1, sensorEvent.values[i]), i);
+                }
             }
-            if (lineData.getDataSetByIndex(i).getXMax() < 0) {
-                lineData.addEntry(new Entry(0, sensorEvent.values[i]), i);
+            lineData.notifyDataChanged();
+            if (lineData.getDataSetByIndex(0).getEntryCount() > 200) {
+                for (int i = 0; i < lineData.getDataSetCount(); i++) {
+                    lineData.removeEntry(lineData.getXMin(), i);
+                }
             }
-            else {
-                lineData.addEntry(new Entry(lineData.getDataSetByIndex(i).getXMax()+1, sensorEvent.values[i]), i);
-            }
-        }
-        lineData.notifyDataChanged();
-        lineChart.notifyDataSetChanged();
-        if (lineData.getDataSetByIndex(0).getEntryCount() > 200) {
-            for (int i = 0; i < lineData.getDataSetCount(); i++) {
-                lineData.removeEntry(lineData.getXMin(), i);
-            }
-        }
-        lineChart.setVisibleXRangeMaximum(200);
-        lineChart.setTouchEnabled(false);
-        if (sensorLineChart.isVisible()) {
             lineData.notifyDataChanged();
             lineChart.notifyDataSetChanged();
+            lineChart.setVisibleXRangeMaximum(200);
+            lineChart.setTouchEnabled(false);
             if (lineData.getXMax() > 200) {
                 lineChart.moveViewToX(lineData.getXMax()-200);
             }
+            else {
+            lineChart.invalidate();
+            }
+            sensorLineChart.setAcceptsRequest(false);
         }
     }
 
