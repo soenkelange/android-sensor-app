@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.haw_hamburg.rxandroidsensor.RxSensorManager;
+import de.haw_hamburg.sensorapp.sensor.writer.SensorDescriptorsProvider;
 
 /**
  * Created by s.lange on 17.01.17.
@@ -31,5 +32,11 @@ public class SensorModule {
     @Singleton
     public SensorPreferences providesSensorPreferences(Context context) {
         return new SensorPreferences(context);
+    }
+
+    @Provides
+    @Singleton
+    public SensorDescriptorsProvider providesSensorDescriptorsProvider() {
+        return new SensorDescriptorsProvider();
     }
 }

@@ -18,6 +18,8 @@ import de.haw_hamburg.sensorapp.csv.CSVWriter;
 import de.haw_hamburg.sensorapp.mvp.AbstractPresenter;
 import de.haw_hamburg.sensorapp.recorder.settings.Sensor;
 import de.haw_hamburg.sensorapp.sensor.SensorEventListenerInteractor;
+import de.haw_hamburg.sensorapp.sensor.writer.SensorDescriptor;
+import de.haw_hamburg.sensorapp.sensor.writer.SensorDescriptorsProvider;
 import de.haw_hamburg.sensorapp.sensor.writer.SensorEventsCSVWriter;
 import rx.Observable;
 import rx.Subscription;
@@ -33,6 +35,7 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
     public static final String TAG = RecorderPresenter.class.getSimpleName();
     private final GetEnabledSensorInteractor enabledSensorInteractor;
     private final SensorEventListenerInteractor sensorEventListenerInteractor;
+    private final SensorDescriptorsProvider sensorDescriptorsProvider;
     private File file;
     private BufferedWriter bufferedFileWriter;
     private SensorEventsCSVWriter sensorEventsCSVWriter;
@@ -41,9 +44,11 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
 
     @Inject
     public RecorderPresenter(GetEnabledSensorInteractor getEnabledSensorInteractor,
-                             SensorEventListenerInteractor sensorEventListenerInteractor) {
+                             SensorEventListenerInteractor sensorEventListenerInteractor,
+                             SensorDescriptorsProvider sensorDescriptorsProvider) {
         this.enabledSensorInteractor = getEnabledSensorInteractor;
         this.sensorEventListenerInteractor = sensorEventListenerInteractor;
+        this.sensorDescriptorsProvider = sensorDescriptorsProvider;
     }
 
 
@@ -79,6 +84,16 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
         sensorEventsCSVWriter = new SensorEventsCSVWriter(csvWriter);
         subscription = enabledSensorInteractor.execute()
                 .flatMapIterable(sensors -> sensors)
+                .map(new Func1<Sensor, Sensor>() {
+                    @Override
+                    public Sensor call(Sensor sensor) {
+                        SensorDescriptor sensorDescriptor = getSensorDescriptor(sensor);
+                        sensorEventsCSVWriter.addSensorDescriptor(sensorDescriptor);
+                        return sensor;
+                    }
+                })
+                .toList()
+                .flatMapIterable(sensors -> sensors)
                 .flatMap(new Func1<Sensor, Observable<SensorEvent>>() {
                     @Override
                     public Observable<SensorEvent> call(Sensor sensor) {
@@ -108,6 +123,10 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private SensorDescriptor getSensorDescriptor(Sensor sensor) {
+        return sensorDescriptorsProvider.getSensorDescriptor(sensor);
     }
 
     private void stopRecording() {

@@ -75,4 +75,8 @@ public class SensorEventsCSVWriter {
             Log.e(TAG, "Could not write next line to CSV", e);
         }
     }
+
+    public void addSensorDescriptor(SensorDescriptor sensorDescriptor) {
+        sensorDescriptorList.add(sensorDescriptor);
+    }
 }
