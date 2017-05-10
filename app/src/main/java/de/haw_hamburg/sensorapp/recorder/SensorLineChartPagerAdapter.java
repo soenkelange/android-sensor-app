@@ -1,7 +1,6 @@
 package de.haw_hamburg.sensorapp.recorder;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.hardware.SensorEvent;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -37,15 +35,17 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         Log.d(SensorLineChartPagerAdapter.class.getSimpleName(), "InstantaiteItem " + position);
         SensorLineChart sensorLineChart = sensorLineCharts.get(position);
-        LineChart lineChart = sensorLineChart.getLineChart();
-        container.addView(lineChart);
-        return lineChart;
+        container.addView(sensorLineChart.getLineChart());
+        sensorLineChart.setVisible(true);
+        return sensorLineChart.getLineChart();
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         Log.d(SensorLineChartPagerAdapter.class.getSimpleName(), "destroyItem " + position);
-        container.removeView((View) object);
+        SensorLineChart sensorLineChart = sensorLineCharts.get(position);
+        container.removeView(sensorLineChart.getLineChart());
+        sensorLineChart.setVisible(false);
     }
 
     @Override
@@ -73,7 +73,6 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
     }
 
     public void addSensorEvent(SensorEvent sensorEvent) {
-        Log.d(SensorLineChartPagerAdapter.class.getSimpleName(), "addSensorEvent");
         SensorLineChart sensorLineChart = getSensorLiveChart(sensorEvent);
         LineChart lineChart = sensorLineChart.getLineChart();
         LineData lineData = lineChart.getLineData();
@@ -85,10 +84,12 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
             }
             lineData.addEntry(new Entry(sensorEvent.timestamp, sensorEvent.values[i]), i);
         }
-        lineData.notifyDataChanged();
-        lineChart.notifyDataSetChanged();
-        lineChart.getXAxis().setLabelCount(200);
-        lineChart.moveViewToX(sensorEvent.timestamp);
+        if (sensorLineChart.isVisible()) {
+            lineData.notifyDataChanged();
+            lineChart.notifyDataSetChanged();
+            lineChart.getXAxis().setLabelCount(200);
+            lineChart.moveViewToX(sensorEvent.timestamp);
+        }
     }
 
     private LineDataSet createDataSet(int i) {

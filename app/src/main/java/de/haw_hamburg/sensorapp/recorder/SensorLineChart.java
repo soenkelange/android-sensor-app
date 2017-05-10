@@ -12,6 +12,7 @@ public class SensorLineChart {
 
     private final Sensor sensor;
     private final LineChart lineChart;
+    private boolean visible;
 
     public SensorLineChart(Sensor sensor, LineChart lineChart) {
         this.sensor = sensor;
@@ -24,5 +25,13 @@ public class SensorLineChart {
 
     public LineChart getLineChart() {
         return lineChart;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 }
