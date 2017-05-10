@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,19 +83,35 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
                 sensorEventValueDataSet = createDataSet(i);
                 lineData.addDataSet(sensorEventValueDataSet);
             }
-            lineData.addEntry(new Entry(sensorEvent.timestamp, sensorEvent.values[i]), i);
+            if (lineData.getDataSetByIndex(i).getXMax() < 0) {
+                lineData.addEntry(new Entry(0, sensorEvent.values[i]), i);
+            }
+            else {
+                lineData.addEntry(new Entry(lineData.getDataSetByIndex(i).getXMax()+1, sensorEvent.values[i]), i);
+            }
         }
+        lineData.notifyDataChanged();
+        lineChart.notifyDataSetChanged();
+        if (lineData.getDataSetByIndex(0).getEntryCount() > 200) {
+            for (int i = 0; i < lineData.getDataSetCount(); i++) {
+                lineData.removeEntry(lineData.getXMin(), i);
+            }
+        }
+        lineChart.setVisibleXRangeMaximum(200);
+        lineChart.setTouchEnabled(false);
         if (sensorLineChart.isVisible()) {
             lineData.notifyDataChanged();
             lineChart.notifyDataSetChanged();
-            lineChart.getXAxis().setLabelCount(200);
-            lineChart.moveViewToX(sensorEvent.timestamp);
+            if (lineData.getXMax() > 200) {
+                lineChart.moveViewToX(lineData.getXMax()-200);
+            }
         }
     }
 
     private LineDataSet createDataSet(int i) {
         LineDataSet set = new LineDataSet(null, "DataSet #" + i);
         set.setLineWidth(2.5f);
+        set.setColor(ColorTemplate.MATERIAL_COLORS[i%3]);
         set.setDrawCircles(false);
         return set;
     }
