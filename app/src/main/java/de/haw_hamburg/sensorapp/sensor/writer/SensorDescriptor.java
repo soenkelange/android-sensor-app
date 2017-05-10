@@ -1,20 +1,22 @@
 package de.haw_hamburg.sensorapp.sensor.writer;
 
+import java.util.List;
+
 /**
  * Created by s.lange on 10.05.17.
  */
 
-public class SensorDescriptor {
+public abstract class SensorDescriptor {
 
     public String getSensorEventValueDescription(int valueIndex) {
-        return null;
+        return getHeaders().get(valueIndex);
     }
 
     public int getSensorEventValuesLength() {
-        return 0;
+        return getHeaders().size();
     }
 
-    public int getSensorType() {
-        return -1;
-    }
+    public abstract List<String> getHeaders();
+
+    public abstract int getSensorType();
 }
