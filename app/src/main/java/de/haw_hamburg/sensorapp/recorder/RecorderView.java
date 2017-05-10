@@ -16,6 +16,10 @@ public interface RecorderView extends View {
 
     void showRecorderSettings();
 
+    void showStartButton();
+
+    void showStopButton();
+
     void addSensorLineChart(Sensor sensor);
 
     void addSensorEvent(SensorEvent sensorEvent);

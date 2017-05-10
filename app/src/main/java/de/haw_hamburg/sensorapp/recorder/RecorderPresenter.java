@@ -68,11 +68,13 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
                         getView().addSensorEvent(sensorEvent);
                     }
                 });
+        getView().showStopButton();
     }
 
     private void stopRecording() {
         recording = false;
         subscription.unsubscribe();
+        getView().showStartButton();
     }
 
     public void onOpenSettingsButtonClicked() {

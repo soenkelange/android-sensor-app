@@ -129,6 +129,16 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     }
 
     @Override
+    public void showStartButton() {
+        controlButton.setText(getString(R.string.recorder_control_start));
+    }
+
+    @Override
+    public void showStopButton() {
+        controlButton.setText(getString(R.string.recorder_control_stop));
+    }
+
+    @Override
     public void addSensorLineChart(Sensor sensor) {
         lineChartPagerAdapter.addSensorLineChart(sensor);
     }
