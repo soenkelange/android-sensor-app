@@ -59,8 +59,6 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
         super.onViewCreated(view, savedInstanceState);
         recorderControlsContainer = (LinearLayout) view.findViewById(R.id.recorderControlsContainer);
         lineChartViewPager = (ViewPager) view.findViewById(R.id.lineChartsViewPager);
-        lineChartPagerAdapter = new SensorLineChartPagerAdapter(getContext());
-        lineChartViewPager.setAdapter(lineChartPagerAdapter);
         controlButton = (Button) view.findViewById(R.id.controlButton);
         controlButton.setOnClickListener(this::onControlButtonClicked);
         noSensorsEnabledContainer = (LinearLayout) view.findViewById(R.id.noSensorsEnabledContainer);
@@ -79,6 +77,8 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public void onResume() {
         super.onResume();
+        lineChartPagerAdapter = new SensorLineChartPagerAdapter(getContext());
+        lineChartViewPager.setAdapter(lineChartPagerAdapter);
         getPresenter().initialize();
     }
 
