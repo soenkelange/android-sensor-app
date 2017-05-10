@@ -4,7 +4,9 @@ import java.util.List;
 
 import de.haw_hamburg.rxandroidsensor.RxSensorManager;
 import de.haw_hamburg.sensorapp.sensor.SensorPreferences;
+import de.haw_hamburg.sensorapp.sensor.writer.SensorDescriptorsProvider;
 import rx.Observable;
+import rx.functions.Func1;
 
 import static java.util.Collections.singletonList;
 
@@ -15,10 +17,12 @@ public class GetSensorCategoriesInteractor {
 
     private final RxSensorManager sensorManager;
     private final SensorPreferences sensorPreferences;
+    private final SensorDescriptorsProvider sensorDescriptorsProvider;
 
-    public GetSensorCategoriesInteractor(RxSensorManager sensorManager, SensorPreferences sensorPreferences) {
+    public GetSensorCategoriesInteractor(RxSensorManager sensorManager, SensorPreferences sensorPreferences, SensorDescriptorsProvider sensorDescriptorsProvider) {
         this.sensorManager = sensorManager;
         this.sensorPreferences = sensorPreferences;
+        this.sensorDescriptorsProvider = sensorDescriptorsProvider;
     }
 
     public Observable<List<SensorCategory>> execute() {
@@ -29,6 +33,7 @@ public class GetSensorCategoriesInteractor {
                     sensor.setEnabled(sensorPreferences.isEnabled(sensor));
                     return sensor;
                 })
+                .filter(sensor -> sensorDescriptorsProvider.getSensorDescriptor(sensor) != null)
                 .toList()
                 .map(sensors -> singletonList(new SensorCategory("All", sensors)));
     }

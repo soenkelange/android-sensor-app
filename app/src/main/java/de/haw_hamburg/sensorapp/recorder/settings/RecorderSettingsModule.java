@@ -4,6 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.haw_hamburg.rxandroidsensor.RxSensorManager;
 import de.haw_hamburg.sensorapp.sensor.SensorPreferences;
+import de.haw_hamburg.sensorapp.sensor.writer.SensorDescriptorsProvider;
 
 /**
  * Created by s.lange on 08.02.17.
@@ -12,8 +13,11 @@ import de.haw_hamburg.sensorapp.sensor.SensorPreferences;
 public class RecorderSettingsModule {
 
     @Provides
-    public GetSensorCategoriesInteractor provideGetSensorCategoriesInteractor(RxSensorManager rxSensorManager, SensorPreferences sensorPreferences) {
-        return new GetSensorCategoriesInteractor(rxSensorManager, sensorPreferences);
+    public GetSensorCategoriesInteractor provideGetSensorCategoriesInteractor(
+            RxSensorManager rxSensorManager,
+            SensorPreferences sensorPreferences,
+            SensorDescriptorsProvider sensorDescriptorsProvider) {
+        return new GetSensorCategoriesInteractor(rxSensorManager, sensorPreferences, sensorDescriptorsProvider);
     }
 
     @Provides
