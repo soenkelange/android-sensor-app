@@ -1,6 +1,7 @@
 package de.haw_hamburg.sensorapp.recorder;
 
 import android.hardware.SensorEvent;
+import android.net.Uri;
 
 import de.haw_hamburg.sensorapp.mvp.View;
 import de.haw_hamburg.sensorapp.recorder.settings.Sensor;
@@ -23,4 +24,6 @@ public interface RecorderView extends View {
     void addSensorLineChart(Sensor sensor);
 
     void addSensorEvent(SensorEvent sensorEvent);
+
+    void exportFile(Uri uri);
 }

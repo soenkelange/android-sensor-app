@@ -1,6 +1,8 @@
 package de.haw_hamburg.sensorapp.recorder;
 
+import android.content.Intent;
 import android.hardware.SensorEvent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -146,5 +148,13 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public void addSensorEvent(SensorEvent sensorEvent) {
         lineChartPagerAdapter.addSensorEvent(sensorEvent);
+    }
+
+    @Override
+    public void exportFile(Uri uri) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.putExtra(Intent.EXTRA_STREAM, uri);
+        i.setType("text/*");
+        startActivity(Intent.createChooser(i, "Email/Upload"));
     }
 }
