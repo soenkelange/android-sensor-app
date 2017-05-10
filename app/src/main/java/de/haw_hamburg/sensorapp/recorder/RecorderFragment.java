@@ -64,7 +64,6 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
         noSensorsEnabledContainer = (LinearLayout) view.findViewById(R.id.noSensorsEnabledContainer);
         openSettingsButton = (Button) view.findViewById(R.id.openSettingsButton);
         openSettingsButton.setOnClickListener(this::onOpenSettingsClicked);
-        getPresenter().initialize();
     }
 
     private void onControlButtonClicked(View view) {
@@ -78,6 +77,7 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public void onResume() {
         super.onResume();
+        getPresenter().initialize();
     }
 
     @Override
