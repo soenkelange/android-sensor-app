@@ -35,6 +35,7 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         Log.d(SensorLineChartPagerAdapter.class.getSimpleName(), "InstantaiteItem " + position);
         SensorLineChart sensorLineChart = sensorLineCharts.get(position);
+        sensorLineChart.getLineChart().setData(new LineData());
         container.addView(sensorLineChart.getLineChart());
         sensorLineChart.setVisible(true);
         return sensorLineChart.getLineChart();
@@ -45,6 +46,7 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
         Log.d(SensorLineChartPagerAdapter.class.getSimpleName(), "destroyItem " + position);
         SensorLineChart sensorLineChart = sensorLineCharts.get(position);
         container.removeView(sensorLineChart.getLineChart());
+        sensorLineChart.getLineChart().setData(null);
         sensorLineChart.setVisible(false);
     }
 
@@ -75,6 +77,9 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
     public void addSensorEvent(SensorEvent sensorEvent) {
         SensorLineChart sensorLineChart = getSensorLiveChart(sensorEvent);
         LineChart lineChart = sensorLineChart.getLineChart();
+        if (!sensorLineChart.isVisible()) {
+            return;
+        }
         LineData lineData = lineChart.getLineData();
         boolean updated = false;
         for (int i = 0; i < sensorEvent.values.length; i++) {
@@ -88,7 +93,7 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
                 updated = true;
             }
         }
-        if (sensorLineChart.isVisible() && updated) {
+        if (updated) {
             lineData.notifyDataChanged();
             lineChart.notifyDataSetChanged();
             lineChart.getXAxis().setLabelCount(200);
