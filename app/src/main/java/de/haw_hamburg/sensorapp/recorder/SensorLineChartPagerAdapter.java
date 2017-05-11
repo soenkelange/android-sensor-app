@@ -82,7 +82,9 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
                 sensorEventValueDataSet = createDataSet(i);
                 lineData.addDataSet(sensorEventValueDataSet);
             }
-            lineData.addEntry(new Entry(sensorEvent.timestamp, sensorEvent.values[i]), i);
+            if ((sensorEventValueDataSet.getXMax() + 50000000) <= sensorEvent.timestamp) {
+                lineData.addEntry(new Entry(sensorEvent.timestamp, sensorEvent.values[i]), i);
+            }
         }
         if (sensorLineChart.isVisible()) {
             lineData.notifyDataChanged();
