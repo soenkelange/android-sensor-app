@@ -18,6 +18,7 @@ public class SensorEventsCSVWriter {
     private static final String EMPTY_STRING = "";
     private final CSVWriter csvWriter;
     private List<SensorDescriptor> sensorDescriptorList = new ArrayList<>();
+    private boolean headerWritten = false;
 
     public SensorEventsCSVWriter(CSVWriter csvWriter) {
         this.csvWriter = csvWriter;
@@ -25,11 +26,13 @@ public class SensorEventsCSVWriter {
 
     public void writeHeaders() {
         List<String> headers = new ArrayList<>();
+        headers.add("Timestamp");
         for (SensorDescriptor sensorDescriptor : sensorDescriptorList) {
             List<String> sensorEventValuesDescriptions = getSensorEventValuesDescriptions(sensorDescriptor);
             headers.addAll(sensorEventValuesDescriptions);
         }
         writeLine(headers);
+        headerWritten = true;
     }
 
     private List<String> getSensorEventValuesDescriptions(SensorDescriptor sensorDescriptor) {
@@ -37,11 +40,16 @@ public class SensorEventsCSVWriter {
         for (int i = 0; i < sensorDescriptor.getSensorEventValuesLength(); i++) {
             sensorEventValuesDescriptions.add(sensorDescriptor.getSensorEventValueDescription(i));
         }
+        sensorEventValuesDescriptions.add("Accuracy");
         return sensorEventValuesDescriptions;
     }
 
     public void write(SensorEvent sensorEvent) {
+        if (!headerWritten) {
+            writeHeaders();
+        }
         List<String> fields = new ArrayList<>();
+        fields.add(String.valueOf(sensorEvent.timestamp));
         for (SensorDescriptor sensorDescriptor : sensorDescriptorList) {
             if (sensorEvent.sensor.getType() == sensorDescriptor.getSensorType()) {
                 fields.addAll(getSensorEventValues(sensorEvent, sensorDescriptor));
@@ -57,6 +65,7 @@ public class SensorEventsCSVWriter {
         for (int i = 0; i < sensorDescriptor.getSensorEventValuesLength(); i++) {
             values.add(String.valueOf(sensorEvent.values[i]));
         }
+        values.add(String.valueOf(sensorEvent.accuracy));
         return values;
     }
 
@@ -65,6 +74,7 @@ public class SensorEventsCSVWriter {
         for (int i = 0; i < sensorDescriptor.getSensorEventValuesLength(); i++) {
             values.add(EMPTY_STRING);
         }
+        values.add("");
         return values;
     }
 
