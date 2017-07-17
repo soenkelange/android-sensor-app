@@ -19,6 +19,6 @@ public class SensorEventListenerInteractor {
     }
 
     public Observable<SensorEvent> execute(Sensor sensor) {
-        return rxSensorManager.observeSensorEvents(sensor.getType(), SensorManager.SENSOR_DELAY_FASTEST);
+        return rxSensorManager.observeSensorEvents(sensor.getType(), 50000);
     }
 }

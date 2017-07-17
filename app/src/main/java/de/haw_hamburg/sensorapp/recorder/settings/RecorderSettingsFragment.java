@@ -37,10 +37,10 @@ public class RecorderSettingsFragment extends BaseMvpFragment<RecorderSettingsPr
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sensorsRecyclerView = (RecyclerView) view.findViewById(R.id.sensorsRecyclerView);
-        sensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         sensorsRecyclerViewAdapter = new SensorsRecyclerViewAdapter();
         sensorsRecyclerViewAdapter.setListener(this::toggleSensor);
         sensorsRecyclerView.setAdapter(sensorsRecyclerViewAdapter);
+        sensorsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getPresenter().loadSensors();
     }
 

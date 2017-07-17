@@ -1,7 +1,6 @@
 package de.haw_hamburg.sensorapp.recorder;
 
 import com.github.mikephil.charting.charts.LineChart;
-
 import de.haw_hamburg.sensorapp.recorder.settings.Sensor;
 
 /**
@@ -13,10 +12,12 @@ public class SensorLineChart {
     private final Sensor sensor;
     private final LineChart lineChart;
     private boolean visible;
+    private long lastTimeStamp;
 
     public SensorLineChart(Sensor sensor, LineChart lineChart) {
         this.sensor = sensor;
         this.lineChart = lineChart;
+        lastTimeStamp = 0;
     }
 
     public Sensor getSensor() {
@@ -33,5 +34,18 @@ public class SensorLineChart {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public boolean getAcceptsRequest(long timeStamp) {
+        if (lastTimeStamp +  50000000 <= timeStamp) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void setLastTimeStamp(long timeStamp) {
+        lastTimeStamp = timeStamp;
     }
 }

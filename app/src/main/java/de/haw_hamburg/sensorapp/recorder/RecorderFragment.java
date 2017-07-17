@@ -1,6 +1,7 @@
 package de.haw_hamburg.sensorapp.recorder;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.hardware.SensorEvent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -77,9 +79,20 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public void onResume() {
         super.onResume();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         lineChartPagerAdapter = new SensorLineChartPagerAdapter(getContext());
         lineChartViewPager.setAdapter(lineChartPagerAdapter);
         getPresenter().initialize();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (getPresenter().isRecording()) {
+            getPresenter().stopRecording();
+        }
     }
 
     @Override
@@ -133,11 +146,13 @@ public class RecorderFragment extends BaseNavigationFragment<RecorderPresenter, 
     @Override
     public void showStartButton() {
         controlButton.setText(getString(R.string.recorder_control_start));
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     public void showStopButton() {
         controlButton.setText(getString(R.string.recorder_control_stop));
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

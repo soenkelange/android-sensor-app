@@ -63,7 +63,9 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
     }
 
     public void onSettingsMenuItemClicked() {
-        getView().showRecorderSettings();
+        if (recording == false) {
+            getView().showRecorderSettings();
+        }
     }
 
     public void onControlButtonClicked() {
@@ -129,7 +131,7 @@ public class RecorderPresenter extends AbstractPresenter<RecorderView> {
         return sensorDescriptorsProvider.getSensorDescriptor(sensor);
     }
 
-    private void stopRecording() {
+    public void stopRecording() {
         recording = false;
         subscription.unsubscribe();
         closeWriter();

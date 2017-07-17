@@ -33,6 +33,9 @@ public class BottomNavigationActivity extends BaseMvpActivity<BottomNavigationPr
     }
 
     private boolean onNavigationItemSelected(MenuItem menuItem) {
+        if (!notRecording()) {
+            return false;
+        }
         switch (menuItem.getItemId()) {
             case R.id.menu_item_compass:
                 getPresenter().onCompassSelected();
@@ -57,28 +60,41 @@ public class BottomNavigationActivity extends BaseMvpActivity<BottomNavigationPr
 
     @Override
     public void showCompass() {
-        resetRequestedOrientation();
-        showFragment(new CompassFragment());
+        showFragment(new CompassFragment(), "COMPASS");
     }
 
     @Override
     public void showSpiritLevel() {
-        resetRequestedOrientation();
-        showFragment(new SpiritLevelFragment());
+        showFragment(new SpiritLevelFragment(), "SPIRIT");
     }
 
     @Override
     public void showRecorder() {
-        showFragment(new RecorderFragment());
+        showFragment(new RecorderFragment(), "RECORDER");
+    }
+
+    private boolean notRecording() {
+        RecorderFragment fragment = (RecorderFragment)getSupportFragmentManager().findFragmentByTag("RECORDER");
+        if (fragment != null) {
+            if (fragment.getPresenter().isRecording() == true) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
     }
 
     private void resetRequestedOrientation() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
-    private void showFragment(BaseNavigationFragment fragment) {
+    private void showFragment(BaseNavigationFragment fragment, String tag) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container, fragment, tag)
                 .commit();
     }
 }

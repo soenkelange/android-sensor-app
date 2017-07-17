@@ -1,6 +1,7 @@
 package de.haw_hamburg.sensorapp.recorder;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.hardware.SensorEvent;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
@@ -25,12 +26,25 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
 
     private final Context context;
     private final List<SensorLineChart> sensorLineCharts;
+    private final int MAX_VISIBLE_ITEMS = 200;
+    private static final int[] colorList = new int[7];
+
+    static
+    {
+        colorList[0]= Color.parseColor("#F44336");
+        colorList[1]= Color.parseColor("#2196F3");
+        colorList[2]= Color.parseColor("#4CAF50");
+        colorList[3]= Color.parseColor("#FFEB3B");
+        colorList[4]= Color.parseColor("#795548");
+        colorList[5]= Color.parseColor("#000000");
+        colorList[6]= Color.parseColor("#9C27B0");
+    }
 
     public SensorLineChartPagerAdapter(Context context) {
         this.context = context;
         this.sensorLineCharts = new ArrayList<>();
     }
-
+    
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Log.d(SensorLineChartPagerAdapter.class.getSimpleName(), "InstantaiteItem " + position);
@@ -46,7 +60,7 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
         Log.d(SensorLineChartPagerAdapter.class.getSimpleName(), "destroyItem " + position);
         SensorLineChart sensorLineChart = sensorLineCharts.get(position);
         container.removeView(sensorLineChart.getLineChart());
-        sensorLineChart.getLineChart().setData(null);
+        sensorLineChart.getLineChart().clear();
         sensorLineChart.setVisible(false);
     }
 
@@ -77,33 +91,45 @@ public class SensorLineChartPagerAdapter extends PagerAdapter {
     public void addSensorEvent(SensorEvent sensorEvent) {
         SensorLineChart sensorLineChart = getSensorLiveChart(sensorEvent);
         LineChart lineChart = sensorLineChart.getLineChart();
-        if (!sensorLineChart.isVisible()) {
-            return;
-        }
-        LineData lineData = lineChart.getLineData();
-        boolean updated = false;
-        for (int i = 0; i < sensorEvent.values.length; i++) {
-            ILineDataSet sensorEventValueDataSet = lineData.getDataSetByIndex(i);
-            if (sensorEventValueDataSet == null) {
-                sensorEventValueDataSet = createDataSet(i);
-                lineData.addDataSet(sensorEventValueDataSet);
+        if (sensorLineChart.isVisible() && sensorLineChart.getAcceptsRequest(sensorEvent.timestamp)) {
+            LineData lineData = lineChart.getLineData();
+            for (int i = 0; i < sensorEvent.values.length; i++) {
+                ILineDataSet sensorEventValueDataSet = lineData.getDataSetByIndex(i);
+                if (sensorEventValueDataSet == null) {
+                    sensorEventValueDataSet = createDataSet(i);
+                    lineData.addDataSet(sensorEventValueDataSet);
+                }
+                if (lineData.getDataSetByIndex(i).getXMax() < 0) {
+                    lineData.addEntry(new Entry(0, sensorEvent.values[i]), i);
+                }
+                else {
+                    lineData.addEntry(new Entry(lineData.getDataSetByIndex(i).getXMax()+1, sensorEvent.values[i]), i);
+                }
             }
-            if ((sensorEventValueDataSet.getXMax() + 50000000) <= sensorEvent.timestamp) {
-                lineData.addEntry(new Entry(sensorEvent.timestamp, sensorEvent.values[i]), i);
-                updated = true;
+            lineData.notifyDataChanged();
+            if (lineData.getDataSetByIndex(0).getEntryCount() > MAX_VISIBLE_ITEMS) {
+                for (int i = 0; i < lineData.getDataSetCount(); i++) {
+                    lineData.removeEntry(lineData.getXMin(), i);
+                }
             }
-        }
-        if (updated) {
             lineData.notifyDataChanged();
             lineChart.notifyDataSetChanged();
-            lineChart.getXAxis().setLabelCount(200);
-            lineChart.moveViewToX(sensorEvent.timestamp);
+            lineChart.setVisibleXRangeMaximum(MAX_VISIBLE_ITEMS);
+            lineChart.setTouchEnabled(false);
+            if (lineData.getXMax() > MAX_VISIBLE_ITEMS) {
+                lineChart.moveViewToX(lineData.getXMax()- MAX_VISIBLE_ITEMS);
+            }
+            else {
+                lineChart.invalidate();
+            }
+            sensorLineChart.setLastTimeStamp(sensorEvent.timestamp);
         }
     }
 
     private LineDataSet createDataSet(int i) {
         LineDataSet set = new LineDataSet(null, "DataSet #" + i);
         set.setLineWidth(2.5f);
+        set.setColor(colorList[i%7]);
         set.setDrawCircles(false);
         return set;
     }
