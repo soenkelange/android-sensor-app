@@ -1,7 +1,5 @@
 package de.haw_hamburg.sensorapp.recorder;
 
-import android.hardware.SensorEvent;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,10 +9,9 @@ import java.util.List;
 
 import de.haw_hamburg.sensorapp.recorder.settings.Sensor;
 import de.haw_hamburg.sensorapp.sensor.SensorEventListenerInteractor;
+import de.haw_hamburg.sensorapp.sensor.writer.SensorDescriptorsProvider;
 import rx.Observable;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -27,6 +24,7 @@ public class RecorderPresenterTest {
 
     private GetEnabledSensorInteractor getEnabledSensorsInteractor;
     private SensorEventListenerInteractor sensorEventListenerInteractor;
+    private SensorDescriptorsProvider sensorDescriptorProvider;
     private RecorderView view;
     private RecorderPresenter recorderPresenter;
 
@@ -34,8 +32,9 @@ public class RecorderPresenterTest {
     public void setUp() throws Exception {
         getEnabledSensorsInteractor = mock(GetEnabledSensorInteractor.class);
         sensorEventListenerInteractor = mock(SensorEventListenerInteractor.class);
+        sensorDescriptorProvider = mock(SensorDescriptorsProvider.class);
         view = mock(RecorderView.class);
-        recorderPresenter = new RecorderPresenter(getEnabledSensorsInteractor, sensorEventListenerInteractor);
+        recorderPresenter = new RecorderPresenter(getEnabledSensorsInteractor, sensorEventListenerInteractor, sensorDescriptorProvider);
         recorderPresenter.attachView(view);
     }
 
