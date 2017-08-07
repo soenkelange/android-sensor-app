@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.haw_hamburg.sensorapp.navigation.BottomNavigationActivity">
+    <item
+        android:id="@+id/menu_item_compass"
+        android:enabled="true"
+        android:icon="@drawable/ic_explore_black_24dp"
+        android:title="@string/menu.compass"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_spiritLevel"
+        android:enabled="true"
+        android:icon="@drawable/ic_straighten_black_24dp"
+        android:title="@string/menu.spiritLevel"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_recorder"
+        android:enabled="true"
+        android:icon="@drawable/ic_fiber_manual_record_black_24dp"
+        android:title="@string/menu.recorder"
+        app:showAsAction="ifRoom" />
+</menu>

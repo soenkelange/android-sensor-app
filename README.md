@@ -1,1 +1,1 @@
-# android-sensor-app
+# [Sensor App](https://github.com/soenkelange/android-sensor-app) &middot; [![Build Status](https://travis-ci.org/soenkelange/android-sensor-app.svg?branch=develop)](https://travis-ci.org/soenkelange/android-sensor-app)

@@ -1,3 +1,52 @@
 <resources>
     <string name="app_name">Sensor App</string>
+    <string name="menu.compass">Compass</string>
+    <string name="menu.spiritLevel">Spirit Level</string>
+    <string name="menu.recorder">Recorder</string>
+
+    <string name="compass.title">Compass</string>
+    <string name="compass.currentLowPassFilterValue">Low-pass filter: %1$d%%</string>
+    <string name="compass.ratioButtons.hardwareSensor">Hardware Sensor</string>
+    <string name="compass.ratioButtons.softwareSensor">Software Sensor</string>
+
+    <string name="spiritLevel.title">Spirit Level</string>
+
+    <string name="recorder.title">Recorder</string>
+    <string name="recorder.menu.settings">Settings</string>
+    <string name="recorder.control.start">Start</string>
+    <string name="recorder.control.stop">Stop</string>
+    <string name="recorder.stopRecordingDialog.title">Stop Recording</string>
+    <string name="recorder.stopRecordingDialog.message">Should the recording be stopped?</string>
+    <string name="recorder.stopRecordingDialog.cancel">Cancel</string>
+    <string name="recorder.stopRecordingDialog.stop">Stop</string>
+    <string name="recorder.noSensorsEnabled.hint">No sensors enabled. Go to settings to enabled sensors.</string>
+    <string name="recorder.noSensorsEnabled.openSettings">Open Settings</string>
+
+    <string name="recorder.settings.title">Recorder Settings</string>
+
+    <string name="sensorCategory.motion">Motion sensors</string>
+    <string name="sensorCategory.environment">Environment sensors</string>
+    <string name="sensorCategory.position">Position sensors</string>
+    <string name="sensorCategory.unknown">Unknown</string>
+
+    <string name="sensor.accelerometer">Accelerometer</string>
+    <string name="sensor.gravity">Gravity</string>
+    <string name="sensor.gyroscope">Gyroscope</string>
+    <string name="sensor.gyroscopeUncalibrated">Gyroscope Uncalibrated</string>
+    <string name="sensor.linearAcceleration">Linear Acceleration</string>
+    <string name="sensor.rotationVector">Rotation Vector</string>
+    <string name="sensor.significantMotion">Significant Motion</string>
+    <string name="sensor.stepCounter">Step Counter</string>
+    <string name="sensor.stepDetector">Step Detector</string>
+    <string name="sensor.gameRotationVector">Game Rotation Vector</string>
+    <string name="sensor.geomagneticRotationVector">Geomagnetic Rotation Vector</string>
+    <string name="sensor.magneticField">Magnetic Field</string>
+    <string name="sensor.magneticFieldUncalibrated">Magnetic Field Uncalibrated</string>
+    <string name="sensor.orientation">Orientation</string>
+    <string name="sensor.proximity">Proximity</string>
+    <string name="sensor.ambientTemperature">Ambient Temperature</string>
+    <string name="sensor.light">Light</string>
+    <string name="sensor.pressure">Pressure</string>
+    <string name="sensor.relativeHumidity">Relative Humidity</string>
+    <string name="sensor.temperature">Temperature</string>
 </resources>

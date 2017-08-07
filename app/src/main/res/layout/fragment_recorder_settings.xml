@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_recorder_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.haw_hamburg.sensorapp.recorder.settings.RecorderSettingsFragment"
+    tools:showIn="@layout/activity_recorder_settings">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sensorsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:paddingTop="@dimen/padding.small"
+        android:paddingBottom="@dimen/padding.small"
+        android:clipToPadding="false"
+        tools:listitem="@layout/list_item_switch" />
+</RelativeLayout>
